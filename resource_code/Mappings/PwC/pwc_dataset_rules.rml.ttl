@@ -1,0 +1,327 @@
+@prefix mlso: <http://w3id.org/mlso/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix mls: <http://www.w3.org/ns/mls#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix prov: <http://www.w3.org/ns/prov#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#>.
+@prefix schema: <http://schema.org/>.
+@prefix formats: <http://www.w3.org/ns/formats/>.
+@prefix comp: <http://semweb.mmlab.be/ns/rml-compression#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix fnml: <http://semweb.mmlab.be/ns/fnml#>.
+@prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
+@base <http://example.com/ns#>.
+
+
+<dataset_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Mappings/PwC/Data/datasets_sample.json";
+		rml:referenceFormulation ql:JSONPath;
+		rml:iterator "$.*"
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/pwc/dataset/{name}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:Dataset;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant dcat:Dataset;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "name";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:title;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "name";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcat:landingPage;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "url";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:source;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "homepage";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:description;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "description";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasScientificReference;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/pwc/scientificWork/{paper.title}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:issued;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "introduced_date";
+			rr:datatype xsd:dateTime
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasModality;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/pwc/dataModality/{modalities}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:language;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "languages";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasVariant;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/pwc/dataset/{variants}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasNumberOfReferences;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "num_papers";
+			rr:datatype xsd:int
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasDataLoaderLocation;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "data_loaders.url";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasDataLoaderLocation;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "data_loaders.repo";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcat:keyword;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "tasks.task";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasTaskType;
+		];
+		rr:objectMap [ 
+			a rr:RefObjectMap;
+			rr:parentTriplesMap <taskTypes_0>;
+			rr:joinCondition [
+				rr:child "tasks.url";
+				rr:parent "pwc_uris";
+			]; 
+		];
+	].
+
+
+<taskTypes_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Mappings/PwC/Data/PwC-Types/PwC-Task_Types.csv";
+		rml:referenceFormulation ql:CSV;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rml:reference "skos_iris";
+	].
+
+
+<modalities_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Mappings/PwC/Data/datasets_sample.json";
+		rml:referenceFormulation ql:JSONPath;
+		rml:iterator "$.*"
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/pwc/modality/{modalities}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mlso:DataModality;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "modalities";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<variants_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Mappings/PwC/Data/datasets_sample.json";
+		rml:referenceFormulation ql:JSONPath;
+		rml:iterator "$.*"
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/pwc/dataset/{variants}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:Dataset;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant dcat:Dataset;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "variants";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:title;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "variants";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:isVariantOf;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/pwc/dataset/{name}";
+		];
+	].
+
+

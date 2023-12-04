@@ -1,0 +1,98 @@
+prefixes: 
+    mlso: http://w3id.org/mlso/
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+    dcterms: http://purl.org/dc/terms/
+    mls: http://www.w3.org/ns/mls#
+    xsd: http://www.w3.org/2001/XMLSchema#
+    foaf: http://xmlns.com/foaf/0.1/
+    prov: http://www.w3.org/ns/prov#
+    dcat: http://www.w3.org/ns/dcat#
+    fabio: http://purl.org/spar/fabio/
+
+# . --> [ ]
+# * --> { }
+
+mappings: 
+
+    paper:
+      sources:
+        access: "Mappings/PwC/Data/papers_with_abstracts_sample.json"
+        referenceFormulation: jsonpath
+        iterator: $.*
+      s: http://w3id.org/mlsea/pwc/scientificWork/$(title)
+      po:
+        - [a, mlso:ScientificWork]
+        - [rdfs:label, $(title), rdfs:Literal]
+        - [dcterms:title, $(title), rdfs:Literal]
+        - [dcterms:source, $(paper_url)~iri]
+        - [fabio:hasArXivId, $(arxiv_id), rdfs:Literal]
+        - [fabio:abstract, $(abstract), rdfs:Literal]
+        - [dcterms:source, $(url_pdf)~iri]
+        - [dcterms:issued, $(date), xsd:dateTime]
+        - [dcterms:creator, http://w3id.org/mlsea/pwc/agent/$(authors)~iri]
+        - [mlso:hasRelatedImlpementation, http://w3id.org/mlsea/pwc/implementation/$(title)~iri]
+        - [dcat:keyword, $(tasks), rdfs:Literal]
+        - [dcat:keyword, $(methods.name), rdfs:Literal]
+        - p: mlso:hasTaskType
+          o:
+              mapping: taskTypes
+              condition:
+                function: equal
+                parameters:
+                    - [str1, $(tasks), s]
+                    - [str2, $(labels), o]
+
+    algorithm:
+      sources:
+        access: "Mappings/PwC/Data/papers_with_abstracts_sample.json"
+        referenceFormulation: jsonpath
+        iterator: $.*
+      s: http://w3id.org/mlsea/pwc/algorithm/$(methods.name)
+      po:
+        - [a, mls:Algorithm]
+        - [rdfs:label, $(methods.name), rdfs:Literal]
+        - [dcterms:title, $(methods.name), rdfs:Literal]
+        - p: mlso:hasAlgorithmType
+          o:
+              mapping: algorithmTypes
+              condition:
+                function: equal
+                parameters:
+                    - [str1, $(methods.name), s]
+                    - [str2, $(labels), o]
+
+    taskTypes:
+      sources:
+          - ['Mappings/PwC/Data/PwC-Types/PwC-Task_Types.csv~csv', '$']
+      s: $(skos_iris)
+
+    algorithmTypes:
+      sources:
+          - ['Mappings/PwC/Data/PwC-Types/PwC-Algorithm_Types.csv~csv', '$']
+      s: $(skos_iris)
+
+    author:
+      sources:
+        access: "Mappings/PwC/Data/papers_with_abstracts_sample.json"
+        referenceFormulation: jsonpath
+        iterator: $.*
+      s: http://w3id.org/mlsea/pwc/agent/$(authors)
+      po: 
+        - [a, foaf:Agent]
+        - [rdfs:label, $(authors), rdfs:Literal] 
+        - [foaf:name, $(authors), rdfs:Literal]
+
+
+    implementation:
+      sources:
+        access: "Mappings/PwC/Data/papers_with_abstracts_sample.json"
+        referenceFormulation: jsonpath
+        iterator: $.*
+      s: http://w3id.org/mlsea/pwc/implementation/$(title)
+      po:
+        - [a, mls:Implementation]
+        - [rdfs:label, implemenation of $(title), rdfs:Literal]
+        - [mls:implements, http://w3id.org/mlsea/pwc/algorithm/$(methods.name)~iri]
+        
+
+

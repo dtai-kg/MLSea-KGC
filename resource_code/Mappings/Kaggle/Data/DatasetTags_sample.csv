@@ -1,0 +1,31 @@
+Id,DatasetId,TagId,TagName
+1,63,2603,football
+91,14,8309,income
+174,16,12116,internet
+175,16,11121,politics
+201,33,11108,finance
+226,31,2606,basketball
+227,31,12101,artificial intelligence
+308,48,12406,rail transport
+423,80,7302,environment
+427,131,2507,video games
+1391,63,3100,europe
+96617,31,12107,computer science
+96619,31,2500,games
+96620,31,16133,gambling
+96675,63,11102,business
+96676,63,4141,sports
+96677,63,2507,video games
+96678,63,2500,games
+96692,80,11102,business
+96708,97,16453,social issues and advocacy
+96782,131,2200,arts and entertainment
+96783,131,16177,anime and manga
+166780,16,7000,earth and nature
+166919,48,12400,transportation
+166923,48,16461,travel
+167073,116,11102,business
+167074,116,11105,education
+191360,14,11102,business
+191363,14,16414,jobs and career
+925038,33,11128,lending

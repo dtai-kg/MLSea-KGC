@@ -1,0 +1,161 @@
+@prefix mlso: <http://w3id.org/mlso/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix mls: <http://www.w3.org/ns/mls#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix prov: <http://www.w3.org/ns/prov#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix schema: <http://schema.org/>.
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#>.
+@prefix formats: <http://www.w3.org/ns/formats/>.
+@prefix comp: <http://semweb.mmlab.be/ns/rml-compression#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix fnml: <http://semweb.mmlab.be/ns/fnml#>.
+@prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
+@prefix sdo: <https://w3id.org/okn/o/sd#>.
+@prefix kg4di: <https://w3id.org/kg4di/definedBy>.
+@base <http://example.com/ns#>.
+
+
+<runExtra_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "evaluations";
+		];
+		rml:referenceFormulation ql:Dictionary;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/pwc/run/{paper_title}/{model_name}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasInput;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/pwc/dataset/{dataset}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasOutput;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/pwc/modelEvaluation/{paper_title}/{model_name}/{metric_name}";
+			rr:termType rr:IRI
+		];
+	].
+
+
+<modelEvaluation_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "evaluations";
+		];
+		rml:referenceFormulation ql:Dictionary;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/pwc/modelEvaluation/{paper_title}/{model_name}/{metric_name}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:ModelEvaluation;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "{metric_name} evaluation for {model_name} model";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:specifiedBy;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/pwc/evaluationMeasure/{metric_name}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasValue;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "metric_value";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<evaluationMeasure_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "evaluations";
+		];
+		rml:referenceFormulation ql:Dictionary;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/pwc/evaluationMeasure/{metric_name}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:EvaluationMeasure;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "metric_name";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+ql:Dictionary a rml:ReferenceFormulation;
+	kg4di:definedBy "Python".
+
+

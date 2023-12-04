@@ -1,0 +1,44 @@
+prefixes: 
+    mlso: http://w3id.org/mlso/
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+    dcterms: http://purl.org/dc/terms/
+    mls: http://www.w3.org/ns/mls#
+    xsd: http://www.w3.org/2001/XMLSchema#
+    foaf: http://xmlns.com/foaf/0.1/
+    prov: http://www.w3.org/ns/prov#
+    dcat: http://www.w3.org/ns/dcat#
+    fabio: http://purl.org/spar/fabio/
+    sdo: https://w3id.org/okn/o/sd# 
+    schema: http://schema.org/
+
+# . --> [ ]
+# * --> { }
+
+mappings: 
+
+    paper:
+      sources:
+        access: "Mappings/PwC/Data/paper_code_links_sample.json"
+        referenceFormulation: jsonpath
+        iterator: $.*
+      s: http://w3id.org/mlsea/pwc/scientificWork/$(paper_title)
+      po:
+        - [mlso:hasRelatedSoftware, http://w3id.org/mlsea/pwc/software/$(paper_title)~iri]
+
+    
+    software:
+      sources:
+        access: "Mappings/PwC/Data/paper_code_links_sample.json"
+        referenceFormulation: jsonpath
+        iterator: $.*
+      s: http://w3id.org/mlsea/pwc/software/$(paper_title)
+      po:
+        - [a, [mls:Software, sdo:Software]]
+        - [rdfs:label, $(paper_title) software, rdfs:Literal]
+        - [dcterms:title, $(paper_title) software, rdfs:Literal]
+        - [schema:codeRepository, $(repo_url)~iri]
+        - [sdo:softwareRequirements, $(framework), rdfs:Literal]
+
+        
+    
+

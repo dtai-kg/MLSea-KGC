@@ -1,0 +1,372 @@
+@prefix mlso: <http://w3id.org/mlso/>.
+@prefix mlso-dc: <http://w3id.org/mlso/vocab/dataset_characteristic/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix mls: <http://www.w3.org/ns/mls#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix prov: <http://www.w3.org/ns/prov#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix sdo: <https://w3id.org/okn/o/sd#>.
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#>.
+@prefix schema: <http://schema.org/>.
+@prefix formats: <http://www.w3.org/ns/formats/>.
+@prefix comp: <http://semweb.mmlab.be/ns/rml-compression#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix fnml: <http://semweb.mmlab.be/ns/fnml#>.
+@prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
+@base <http://example.com/ns#>.
+
+
+<flow_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Data/OpenML-Samples/flows.csv";
+		rml:referenceFormulation ql:CSV;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/flow/{id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:Implementation;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "OpenML Flow {id}";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:title;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "full_name";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:hasVersion;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "version";
+			rr:datatype xsd:integer
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:identifier;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "id";
+			rr:datatype xsd:integer
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:description;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "description";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:language;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "language";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant prov:atLocation;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "openml_url";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:issued;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "upload_date";
+			rr:datatype xsd:dateTime
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasPart;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/software/{id}";
+			rr:termType rr:IRI
+		];
+	].
+
+
+<flowTag_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Data/OpenML-Samples/flow_tags.csv";
+		rml:referenceFormulation ql:CSV
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcat:keyword;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "tag";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<flowDependency_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Data/OpenML-Samples/flow_dependencies.csv";
+		rml:referenceFormulation ql:CSV
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/software/{flow_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant sdo:Software;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "OpenML Flow {flow_id} Software";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant sdo:softwareRequirements;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "dependency";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<flowHyperparameter_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Data/OpenML-Samples/flow_params.csv";
+		rml:referenceFormulation ql:CSV
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasHyperParameter;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}/hyperParameter/{key}";
+		];
+	].
+
+
+<flowHyperparameterDefinition_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Data/OpenML-Samples/flow_params.csv";
+		rml:referenceFormulation ql:CSV
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}/hyperParameter/{key}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:HyperParameter;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:ImplementationCharacteristic;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "OpenML Flow {flow_id} {key} HyperParameter";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:title;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "key";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:description;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "description";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasQuality;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}/hyperParameter/{key}/hyperParameterCharacteristic/datatype";
+			rr:termType rr:IRI
+		];
+	].
+
+
+<hyperparameterDatatype_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Data/OpenML-Samples/flow_params.csv";
+		rml:referenceFormulation ql:CSV
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}/hyperParameter/{key}/hyperParameterCharacteristic/datatype";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mlso:HyperParameterCharacteristic;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "{key} data-type";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasDataCharacteristicType;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mlso-dc:datatype;
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasValue;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "datatype";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+

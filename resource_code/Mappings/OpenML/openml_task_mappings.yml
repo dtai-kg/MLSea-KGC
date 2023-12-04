@@ -1,0 +1,81 @@
+prefixes:
+    mlso: http://w3id.org/mlso/
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+    dcterms: http://purl.org/dc/terms/
+    mls: http://www.w3.org/ns/mls#
+    skos: http://www.w3.org/2004/02/skos/core#
+    xsd: http://www.w3.org/2001/XMLSchema#
+    grel: http://users.ugent.be/~bjdmeest/function/grel.ttl#
+    schema: http://schema.org/
+    idlab-fn: http://example.com/idlab/function/
+    foaf: http://xmlns.com/foaf/0.1/
+    prov: http://www.w3.org/ns/prov#
+    open: http://open.vocab.org/terms/
+
+mappings:
+
+#task mappings            
+    task:
+        sources:
+            - ['Data/OpenML-Samples/tasks.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/task/$(tid)
+        po: 
+            - [a, mls:Task]   
+            - [rdfs:label, $(name), rdfs:Literal] ###
+            - [dcterms:title, $(name), rdfs:Literal]
+            - [dcterms:identifier, $(tid), xsd:integer]
+            - [prov:atLocation, $(url)~iri]
+            - [mls:definedOn, http://w3id.org/mlsea/openml/dataset/$(did)~iri]
+            - p: mlso:hasTaskType
+              o:
+                  mapping: taskTypes
+                  condition:
+                    function: equal
+                    parameters:
+                        - [str1, $(task_type), s]
+                        - [str2, $(value), o]
+
+    evaluationSpecification:
+        sources:
+            - ['Data/OpenML-Samples/tasks.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/evaluationSpecification/$(tid)
+        po: 
+            - [a, mls:EvaluationSpecification]
+            - [rdfs:label, Task $(tid) Evaluation Specification, rdfs:Literal] ###
+            - [mls:defines, http://w3id.org/mlsea/openml/task/$(tid)~iri]
+            - [mls:hasPart, http://w3id.org/mlsea/openml/evaluationMeasure/$(tid)~iri]
+            - [mls:hasPart, http://w3id.org/mlsea/openml/evaluationProcedure/$(tid)~iri]
+
+    
+    taskTypes:
+        sources:
+            - ['Mappings/OpenML/Data/OpenML-Types/task_types.csv~csv', '$']
+        s: $(skos_uri)
+
+    estimationProcedure:
+        sources:
+            - ['Data/OpenML-Samples/tasks.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/evaluationProcedure/$(tid)
+        po:
+            - [a, mls:EvaluationProcedure]
+            - [rdfs:label, $(estimation_procedure), rdfs:Literal]
+            - p: mlso:hasEvaluationProcedureType
+              o:
+                mapping: estimationProcedureTypes
+                condition:
+                    function: equal
+                    parameters:
+                        - [str1, $(estimation_procedure_type), s]
+                        - [str2, $(value), o]
+
+    estimationProcedureTypes:
+        sources:
+            - ['Mappings/OpenML/Data/OpenML-Types/estimation_procedure_types.csv~csv', '$']
+        s: $(skos_uri)
+
+ mlso:hasTaskType ?TaskTypeID.
+ ?TaskTypeID skos:prefLabel ?PwC_Task.
+    
+
+     
+

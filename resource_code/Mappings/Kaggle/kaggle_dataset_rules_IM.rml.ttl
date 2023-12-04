@@ -1,0 +1,270 @@
+@prefix mlso: <http://w3id.org/mlso/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix mls: <http://www.w3.org/ns/mls#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix prov: <http://www.w3.org/ns/prov#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#>.
+@prefix schema: <http://schema.org/>.
+@prefix formats: <http://www.w3.org/ns/formats/>.
+@prefix comp: <http://semweb.mmlab.be/ns/rml-compression#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix fnml: <http://semweb.mmlab.be/ns/fnml#>.
+@prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
+@prefix sdo: <https://w3id.org/okn/o/sd#>.
+@prefix kg4di: <https://w3id.org/kg4di/definedBy>.
+@base <http://example.com/ns#>.
+
+
+<dataset_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "datasets_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/kaggle/dataset/{Id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:Dataset;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant dcat:Catalog;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:creator;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/kaggle/agent/{CreatorUserId}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:identifier;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "Id";
+			rr:datatype xsd:integer
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:created;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "CreationDate";
+			rr:datatype xsd:dateTime
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcat:landingPage;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "https://www.kaggle.com/datasets/{UserName}/{Slug}";
+			rr:termType rr:IRI
+		];
+	].
+
+
+<datasetVersion_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "dataset_versions_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/kaggle/dataset/{DatasetId}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:license;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "LicenseName";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:modified;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "CreationDate";
+			rr:datatype xsd:dateTime
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:title;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "Title";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "Title";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:description;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "Description";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<creator_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "users_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/kaggle/agent/{Id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant foaf:Agent;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "DisplayName";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant foaf:name;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "DisplayName";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<datasetTag_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "dataset_tags_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/kaggle/dataset/{DatasetId}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcat:keyword;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "TagName";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+ql:DataFrame a rml:ReferenceFormulation;
+	kg4di:definedBy "Pandas".
+

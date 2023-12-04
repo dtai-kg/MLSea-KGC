@@ -1,0 +1,6 @@
+skos_uri,value
+http://w3id.org/mlso/vocab/estimation_procedure#crossvalidation,crossvalidation
+http://w3id.org/mlso/vocab/estimation_procedure#holdout,holdout
+http://w3id.org/mlso/vocab/estimation_procedure#leave_one_out,leaveoneout
+http://w3id.org/mlso/vocab/estimation_procedure#holdout,holdout_ordered
+http://w3id.org/mlso/vocab/estimation_procedure#holdout,customholdout

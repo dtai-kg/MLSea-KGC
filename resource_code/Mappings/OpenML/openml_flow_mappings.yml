@@ -1,0 +1,80 @@
+prefixes:
+    mlso: http://w3id.org/mlso/
+    mlso-dc: http://w3id.org/mlso/vocab/dataset_characteristic/
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+    dcterms: http://purl.org/dc/terms/
+    mls: http://www.w3.org/ns/mls#
+    xsd: http://www.w3.org/2001/XMLSchema#
+    foaf: http://xmlns.com/foaf/0.1/
+    prov: http://www.w3.org/ns/prov#
+    dcat: http://www.w3.org/ns/dcat#
+    sdo: https://w3id.org/okn/o/sd# 
+
+
+mappings:
+
+#flow mappings
+
+    flow:
+      sources:
+          - ['Data/OpenML-Samples/flows.csv~csv', '$']
+      s: http://w3id.org/mlsea/openml/flow/$(id)
+      po:
+          - [a, mls:Implementation]
+          - [rdfs:label, OpenML Flow $(id), rdfs:Literal] 
+          - [dcterms:title,  $(full_name), rdfs:Literal]
+          - [dcterms:hasVersion, $(version), xsd:integer]
+          - [dcterms:identifier, $(id), xsd:integer]
+          - [dcterms:description, $(description), rdfs:Literal]
+          - [dcterms:language, $(language), rdfs:Literal]
+          - [prov:atLocation, $(openml_url)~iri]
+          - [dcterms:issued, $(upload_date), xsd:dateTime]
+          - [mls:hasPart, http://w3id.org/mlsea/openml/software/$(id)~iri]
+
+
+    flowTag:
+        sources:
+            - ['Data/OpenML-Samples/flow_tags.csv~csv']
+        s: http://w3id.org/mlsea/openml/flow/$(flow_id)
+        po: 
+            - [dcat:keyword, $(tag), rdfs:Literal]
+
+    flowDependency:
+        sources:
+            - ['Data/OpenML-Samples/flow_dependencies.csv~csv']
+        s: http://w3id.org/mlsea/openml/software/$(flow_id)
+        po:
+            - [a, sdo:Software]
+            - [rdfs:label, OpenML Flow $(flow_id) Software, rdfs:Literal] ###
+            - [sdo:softwareRequirements, $(dependency), rdfs:Literal]
+
+    
+    flowHyperparameter:
+        sources: 
+            - ['Data/OpenML-Samples/flow_params.csv~csv']
+        s: http://w3id.org/mlsea/openml/flow/$(flow_id)
+        po: 
+            - [mls:hasHyperParameter, http://w3id.org/mlsea/openml/flow/$(flow_id)/hyperParameter/$(key)]
+
+
+    flowHyperparameterDefinition:
+        sources:
+           - ['Data/OpenML-Samples/flow_params.csv~csv'] 
+        s: http://w3id.org/mlsea/openml/flow/$(flow_id)/hyperParameter/$(key)
+        po:
+            - [a, mls:HyperParameter]
+            - [a, mls:ImplementationCharacteristic]
+            - [rdfs:label, OpenML Flow $(flow_id) $(key) HyperParameter, rdfs:Literal] ###
+            - [dcterms:title, $(key), rdfs:Literal]
+            - [dcterms:description, $(description), rdfs:Literal]
+            - [mls:hasQuality, http://w3id.org/mlsea/openml/flow/$(flow_id)/hyperParameter/$(key)/hyperParameterCharacteristic/datatype~iri]
+
+    hyperparameterDatatype:
+        sources:
+            - ['Data/OpenML-Samples/flow_params.csv~csv']
+        s: http://w3id.org/mlsea/openml/flow/$(flow_id)/hyperParameter/$(key)/hyperParameterCharacteristic/datatype
+        po:
+            - [a, mlso:HyperParameterCharacteristic]
+            - [rdfs:label, $(key) data-type, rdfs:Literal]
+            - [mlso:hasDataCharacteristicType, mlso-dc:datatype~iri]
+            - [mls:hasValue, $(datatype), rdfs:Literal]

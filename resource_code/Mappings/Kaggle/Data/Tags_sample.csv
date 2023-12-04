@@ -1,0 +1,91 @@
+Id,ParentTagId,Name
+2200,16637.0,arts and entertainment
+2500,2100.0,games
+2507,2500.0,video games
+2603,4141.0,football
+2606,4141.0,basketball
+3100,3000.0,europe
+4141,4130.0,sports
+7000,16637.0,earth and nature
+7302,7000.0,environment
+8309,16414.0,income
+11102,11000.0,business
+11105,11000.0,education
+11108,11102.0,finance
+11121,11200.0,politics
+11128,11108.0,lending
+12101,12107.0,artificial intelligence
+12107,12000.0,computer science
+12116,12000.0,internet
+12400,12000.0,transportation
+12406,12400.0,rail transport
+16133,2500.0,gambling
+16177,16175.0,anime and manga
+16414,11000.0,jobs and career
+16453,11000.0,social issues and advocacy
+16461,11102.0,travel
+1115,12116.0,websites
+1220,12116.0,search engines
+1222,11105.0,universities and colleges
+2202,2200.0,celebrities
+2206,2200.0,literature
+2207,2200.0,museums
+2302,2200.0,dance
+2303,2200.0,movies and tv shows
+2304,2200.0,music
+2400,2200.0,art
+2501,2500.0,board games
+2502,2500.0,card games
+2505,2500.0,puzzles
+2604,4141.0,auto racing
+2605,4141.0,baseball
+2610,4141.0,cricket
+2614,4141.0,golf
+2618,4141.0,hockey
+2626,4141.0,tennis
+2629,4141.0,water sports
+3003,7302.0,water bodies
+3004,7302.0,cities and urban areas
+3008,7302.0,deserts
+3011,7302.0,mountains
+7100,7000.0,biology
+7200,7000.0,earth science
+7301,7000.0,animals
+7306,7000.0,plants
+7307,7302.0,pollution
+7400,7000.0,physical science
+7407,7302.0,natural disasters
+7408,7302.0,weather and climate
+8302,16414.0,employment
+9100,2200.0,philosophy
+11122,11102.0,real estate
+11129,11108.0,banking
+11130,11108.0,crowdfunding
+12001,7302.0,agriculture
+12021,7302.0,forestry
+12027,11102.0,marketing
+12117,12116.0,mobile and wireless
+12125,12107.0,programming
+12127,12107.0,software
+12402,12400.0,automobiles and vehicles
+12403,12400.0,aviation
+12404,12400.0,cycling
+12411,12400.0,water transport
+16151,2507.0,simulations
+16175,2200.0,comics and animation
+16189,4141.0,martial arts
+16206,4141.0,volleyball
+16302,11102.0,ratings and reviews
+16340,11102.0,e-commerce services
+16369,11108.0,insurance
+16371,11108.0,investing
+16373,11108.0,currencies and foreign exchange
+16409,11105.0,primary and secondary schools
+16410,11105.0,standardized testing
+16457,16453.0,human rights
+16467,16461.0,hotels and accommodations
+16486,12116.0,email and messaging
+16489,12116.0,online communities
+16579,12107.0,accelerators
+16642,16453.0,racial equity
+16643,16453.0,ml ethics

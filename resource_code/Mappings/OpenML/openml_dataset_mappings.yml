@@ -1,0 +1,315 @@
+prefixes:
+    mlso: http://w3id.org/mlso/
+    mlso-dc: http://w3id.org/mlso/vocab/dataset_characteristic/
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+    dcterms: http://purl.org/dc/terms/
+    mls: http://www.w3.org/ns/mls#
+    skos: http://www.w3.org/2004/02/skos/core#
+    xsd: http://www.w3.org/2001/XMLSchema#
+    grel: http://users.ugent.be/~bjdmeest/function/grel.ttl#
+    schema: http://schema.org/
+    idlab-fn: http://example.com/idlab/function/
+    foaf: http://xmlns.com/foaf/0.1/
+    prov: http://www.w3.org/ns/prov#
+    open: http://open.vocab.org/terms/
+    dcat: http://www.w3.org/ns/dcat#
+    edam: http://edamontology.org/
+
+mappings:
+
+#dataset mappings
+    datasetCreator:
+        sources:
+            - ['Data/OpenML-Samples/dataset_creators.csv~csv']
+        s: http://w3id.org/mlsea/openml/agent/$(creator_per_dataset)
+        po: 
+            - [a, foaf:Agent]
+            - [rdfs:label, $(creator_per_dataset), rdfs:Literal] 
+            - [foaf:name, $(creator_per_dataset), rdfs:Literal]
+            
+    datasetTag:
+        sources:
+            - ['Data/OpenML-Samples/dataset_tags.csv~csv']
+        s: http://w3id.org/mlsea/openml/dataset/$(did_per_tag)
+        po: 
+            - [dcat:keyword, $(tag_per_dataset), rdfs:Literal]
+
+            
+    feature:
+        sources:
+            - ['Data/OpenML-Samples/dataset_features.csv~csv']
+        s: http://w3id.org/mlsea/openml/feature/$(dataset_id)-$(feature_id)
+        po:
+            - [a, mls:Feature]
+            - [rdfs:label, $(name), rdfs:Literal] 
+            - [dcterms:title, $(name)]
+            - [mls:hasQuality, http://w3id.org/mlsea/openml/feature/$(dataset_id)-$(feature_id)/featureCharacteristic/datatype~iri]    
+            - [mls:hasQuality, http://w3id.org/mlsea/openml/feature/$(dataset_id)-$(feature_id)/featureCharacteristic/number_of_missing_values~iri] 
+            
+            
+    featureDatatype:
+        sources:
+            - ['Data/OpenML-Samples/dataset_features.csv~csv']
+        s: http://w3id.org/mlsea/openml/feature/$(dataset_id)-$(feature_id)/featureCharacteristic/datatype
+        po:
+            - [a, mls:FeatureCharacteristic]
+            - [rdfs:label, "$(name) data-type", rdfs:Literal]
+            - [mlso:hasDataCharacteristicType, mlso-dc:datatype~iri]
+            - [mls:hasValue, $(type), rdfs:Literal]
+            
+    featureNumberOfMissingValues:
+        sources:
+            - ['Data/OpenML-Samples/dataset_features.csv~csv']
+        s: http://w3id.org/mlsea/openml/feature/$(dataset_id)-$(feature_id)/featureCharacteristic/number_of_missing_values
+        po:
+            - [a, mls:FeatureCharacteristic]
+            - [rdfs:label, "$(name) number of missing values", rdfs:Literal]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_missing_values~iri]
+            - [mls:hasValue, $(missing_values), xsd:integer]
+            
+    dataset:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)
+        po: 
+            - [a, mls:Dataset]
+            - [a, dcat:Dataset]
+            - [dcterms:title, $(name), rdfs:Literal] 
+            - [rdfs:label, $(name), rdfs:Literal] 
+            - [dcterms:hasVersion, $(version), xsd:integer]
+            - [dcterms:identifier, $(did), xsd:integer]
+            - [dcterms:description, $(description), rdfs:Literal]
+            - [dcterms:contributor, $(contributor), rdfs:Literal]
+            # - [dcterms:date, $(collection_date)-01-01T00:00:00, xsd:dateTime]
+            - [dcterms:issued, $(upload_date), xsd:dateTime]
+            - [dcterms:license, $(licence), rdfs:Literal]
+            # - [prov:atLocation, $(url)~iri]
+            - [dcat:landingPage, $(url)~iri]
+            - [dcterms:accessRights, $(visibility), rdfs:Literal]
+            - [dcterms:source, $(original_data_url)~iri]
+            # - [dcterms:isReferencedBy, $(paper_url)~iri]
+            - [dcat:distribution, http://w3id.org/mlsea/openml/distribution/$(did)~iri]
+            - p: dcterms:creator
+              o:
+                  mapping: datasetCreator 
+                  condition:
+                      - function: equal
+                        parameters:
+                          - [str1, $(did), s]
+                          - [str2, $(did_per_creator), o]
+            
+
+    distribution:
+      sources:
+        - ['Data/OpenML-Samples/datasets.csv~csv']
+      s: http://w3id.org/mlsea/openml/distribution/$(did)
+      po: 
+        - [a, dcat:Distribution]
+        - [rdfs:label, $(name) distribution, rdfs:Literal] ###
+        - [mlso:hasFormat, http://edamontology.org/format_3581~iri]
+        - [mlso:hasCacheFormat, $(cache_format), rdfs:Literal]
+        - [dcterms:language, $(language), rdfs:Literal]
+        - [open:hasMD5, $(md5_checksum), rdfs:Literal]
+        - [dcat:downloadURL, $(url)~iri]
+        - p: mls:hasPart
+          o:
+              mapping: feature 
+              condition:
+                  - function: equal
+                    parameters:
+                      - [str1, $(did), s]
+                      - [str2, $(dataset_id), o]
+        - p: mlso:hasDefaultTargetFeature
+          o:
+              mapping: feature 
+              condition:
+                  - function: equal
+                    parameters:
+                      - [str1, $(default_target_attribute), s]
+                      - [str2, $(name), o]
+                  - function: equal
+                    parameters:
+                      - [str1, $(did), s]
+                      - [str2, $(dataset_id), o]
+        - p: mlso:ignoresFeature
+          o:
+              mapping: feature 
+              condition:
+                  - function: equal
+                    parameters:
+                      - [str1, $(ignore_attribute), s]
+                      - [str2, $(name), o]
+                  - function: equal
+                    parameters:
+                      - [str1, $(did), s]
+                      - [str2, $(dataset_id), o]
+        - p: mlso:hasIdFeature
+          o:
+              mapping: feature 
+              condition:
+                  - function: equal
+                    parameters:
+                      - [str1, $(row_id_attribute), s]
+                      - [str2, $(name), o] 
+                  - function: equal
+                    parameters:
+                      - [str1, $(did), s]
+                      - [str2, $(dataset_id), o]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/MajorityClassSize~iri]
+        # - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/MaxNominalAttDistinctValues~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/MinorityClassSize~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfClasses~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfFeatures~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfInstances~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfInstancesWithMissingValues~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfMissingValues~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfNumericFeatures~iri]
+        - [mls:hasQuality, http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfSymbolicFeatures~iri]
+
+
+    # # ScientificWork conditional mappings (Only works with YARRRML-Parser and RML-Mapper)
+    # scientificWork:
+    #   sources:
+    #         - ['Data/OpenML-Samples/datasets.csv~csv']
+    #   s: http://w3id.org/mlsea/openml/scientificWork/$(did)
+    #   condition:
+    #     function: grel:boolean_not
+    #     parameters:
+    #       - parameter: grel:bool_b
+    #         value:
+    #           function: idlab-fn:isNull
+    #           parameters:
+    #             - [idlab-fn:str, $(paper_url)]
+    #   po: 
+    #     - [a, mlso:ScientificWork]
+    #     - [prov:atLocation, $(paper_url)~iri]
+    #     - [mlso:scientificReferenceOf, http://w3id.org/mlsea/openml/dataset/$(did)~iri]
+
+
+    # ScientificWork without conditions 
+    scientificWork:
+      sources:
+            - ['Data/OpenML-Samples/dataset_references.csv~csv']
+      s: http://w3id.org/mlsea/openml/scientificWork/$(did)
+      po: 
+        - [a, mlso:ScientificWork]
+        - [rdfs:label, Scientific Work $(did), rdfs:Literal] ###
+        - [prov:atLocation, $(paper_url)~iri]
+        - [mlso:scientificReferenceOf, http://w3id.org/mlsea/openml/dataset/$(did)~iri]
+                        
+
+    majorityClassSize:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/MajorityClassSize
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset majority class size, rdfs:Literal]
+            - [mlso:hasDataCharacteristicType, mlso-dc:majority_class_size~iri]
+            - [mls:hasValue, $(MajorityClassSize), xsd:float]     
+
+    # maxNominalAttDistinctValues:
+    #     sources:
+    #         - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+    #     s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/MaxNominalAttDistinctValues      
+    #     po:
+    #         - [a, mls:DatasetCharacteristic]
+    #         - [rdfs:label, $(name) dataset max nominal att distinct values, rdfs:Literal]
+    #         - [mls:hasValue, $(MaxNominalAttDistinctValues), xsd:float]
+    #         - [mlso:hasDataCharacteristicType, mlso-dc:max_nominal_att_distinct_values~iri]
+         
+            
+    minorityClassSize:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/MinorityClassSize         
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset minority class size, rdfs:Literal]
+            - [mls:hasValue, $(MinorityClassSize), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:minority_class_size~iri]
+            
+            
+    numberOfClasses:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfClasses    
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset number of classes, rdfs:Literal]
+            - [mls:hasValue, $(NumberOfClasses), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_classes~iri]
+            
+    
+    numberOfFeatures:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfFeatures       
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset number of features, rdfs:Literal]
+            - [mls:hasValue, $(NumberOfFeatures), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_features~iri]
+            
+            
+    numberOfInstances:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfInstances       
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset number of instances, rdfs:Literal]
+            - [mls:hasValue, $(NumberOfInstances), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_instances~iri]
+            
+            
+    numberOfInstancesWithMissingValues:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfInstancesWithMissingValues              
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset number of instances with missing values, rdfs:Literal]
+            - [mls:hasValue, $(NumberOfInstancesWithMissingValues), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_instances_with_missing_values~iri]
+            
+            
+    numberOfMissingValues:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfMissingValues       
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset number of missing values, rdfs:Literal]
+            - [mls:hasValue, $(NumberOfMissingValues), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_missing_values~iri]
+            
+            
+    numberOfNumericFeatures:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfNumericFeatures       
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset number of numeric features, rdfs:Literal]
+            - [mls:hasValue, $(NumberOfNumericFeatures), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_numeric_features~iri]
+            
+            
+    numberOfSymbolicFeatures:
+        sources:
+            - ['Data/OpenML-Samples/datasets.csv~csv', '$']
+        s: http://w3id.org/mlsea/openml/dataset/$(did)/datasetCharacteristic/NumberOfSymbolicFeatures        
+        po:
+            - [a, mls:DatasetCharacteristic]
+            - [rdfs:label, $(name) dataset number of symbolic features, rdfs:Literal]
+            - [mls:hasValue, $(NumberOfSymbolicFeatures), xsd:float]
+            - [mlso:hasDataCharacteristicType, mlso-dc:number_of_symbolic_features~iri]
+
+
+            
+    
+        
+        
+
+

@@ -1,0 +1,525 @@
+@prefix mlso: <http://w3id.org/mlso/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix mls: <http://www.w3.org/ns/mls#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix prov: <http://www.w3.org/ns/prov#>.
+@prefix dcat: <http://www.w3.org/ns/dcat#>.
+@prefix rr: <http://www.w3.org/ns/r2rml#>.
+@prefix rml: <http://semweb.mmlab.be/ns/rml#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix ql: <http://semweb.mmlab.be/ns/ql#>.
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#>.
+@prefix schema: <http://schema.org/>.
+@prefix formats: <http://www.w3.org/ns/formats/>.
+@prefix comp: <http://semweb.mmlab.be/ns/rml-compression#>.
+@prefix void: <http://rdfs.org/ns/void#>.
+@prefix fnml: <http://semweb.mmlab.be/ns/fnml#>.
+@prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#>.
+@prefix sdo: <https://w3id.org/okn/o/sd#>.
+@prefix kg4di: <https://w3id.org/kg4di/definedBy>.
+@base <http://example.com/ns#>.
+
+
+<run_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "runs_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/run/{run_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:Run;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "Run {run_id}";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:achieves;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/task/{task_id}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:description;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "description";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant prov:atLocation;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "openml_url";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasPredictionsLocation;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "predictions_url";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant dcterms:creator;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/agent/{uploader_name}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasInput;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/dataset/{did}";
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:executes;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}";
+		];
+	].
+
+
+<runSettings_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "run_settings_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/run/{run_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasInput;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/run/{run_id}/hyperParameterSetting/{param}";
+			rr:termType rr:IRI
+		];
+	].
+
+
+<hyperParameterSetting_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "run_settings_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/run/{run_id}/hyperParameterSetting/{param}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:HyperParameterSetting;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:specifiedBy;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}/hyperParameter/{param}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasValue;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "value";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<run_uploader_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "runs_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/agent/{uploader_name}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant foaf:Agent;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "uploader_name";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant foaf:name;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "uploader_name";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<runEvaluation_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "run_evaluations_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/run/{run_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasOutput;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/run/{run_id}/modelEvaluation/{eval_name}";
+			rr:termType rr:IRI
+		];
+	].
+
+
+<modelEvaluation_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "run_evaluations_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/run/{run_id}/modelEvaluation/{eval_name}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:ModelEvaluation;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "run {run_id} {eval_name} evaluation";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:specifiedBy;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/evaluationMeasure/{eval_name}";
+			rr:termType rr:IRI
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mls:hasValue;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "value";
+			rr:datatype rdfs:Literal
+		];
+	].
+
+
+<evaluationMeasure_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "run_evaluations_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/evaluationMeasure/{eval_name}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdf:type;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:constant mls:EvaluationMeasure;
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant rdfs:label;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rml:reference "eval_name";
+			rr:datatype rdfs:Literal
+		];
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasEvaluationMeasureType;
+		];
+		rr:objectMap [ 
+			a rr:RefObjectMap;
+			rr:parentTriplesMap <evaluationMeasureTypes_0>;
+			rr:joinCondition [
+				rr:child "eval_name";
+				rr:parent "val";
+			]; 
+		];
+	].
+
+
+<evaluationMeasureTypes_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source "Mappings/OpenML/Data/OpenML-Types/evaluation_measure_types.csv";
+		rml:referenceFormulation ql:CSV;
+		rml:iterator "$";
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rml:reference "skos_uri";
+	].
+
+
+<taskImplementation_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "runs_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/task/{task_id}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasRelatedImplementation;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}";
+			rr:termType rr:IRI
+		];
+	].
+
+
+<datasetImplementation_0> a rr:TriplesMap;
+
+	rml:logicalSource [
+		a rml:LogicalSource;
+		rml:source [
+			a sdo:DatasetSpecification;
+			sdo:name "runs_df";
+			sdo:hasDataTransformation [
+				sdo:hasSoftwareRequirements "pandas>=1.1.0";
+				sdo:hasSourceCode [
+					sdo:programmingLanguage "Python3.9";
+				];
+			];
+		];
+		rml:referenceFormulation ql:DataFrame;
+	];
+	rr:subjectMap [
+		a rr:SubjectMap;
+		rr:template "http://w3id.org/mlsea/openml/dataset/{did}";
+	];
+	rr:predicateObjectMap [
+		rr:predicateMap [
+			a rr:PredicateMap;
+			rr:constant mlso:hasRelatedImplementation;
+		];
+		rr:objectMap [
+			a rr:ObjectMap;
+			rr:template "http://w3id.org/mlsea/openml/flow/{flow_id}";
+			rr:termType rr:IRI
+		];
+	].
+
+ql:DataFrame a rml:ReferenceFormulation;
+	kg4di:definedBy "Pandas".
+

@@ -1,0 +1,57 @@
+prefixes: 
+    mlso: http://w3id.org/mlso/
+    rdfs: http://www.w3.org/2000/01/rdf-schema#
+    dcterms: http://purl.org/dc/terms/
+    mls: http://www.w3.org/ns/mls#
+    xsd: http://www.w3.org/2001/XMLSchema#
+    foaf: http://xmlns.com/foaf/0.1/
+    prov: http://www.w3.org/ns/prov#
+    dcat: http://www.w3.org/ns/dcat#
+    sdo: https://w3id.org/okn/o/sd# 
+    schema: http://schema.org/
+
+mappings:
+
+    kernel:
+      sources:
+          - ['Data/Kernels_sample.csv~csv']
+      s: http://w3id.org/mlsea/kaggle/software/$(Id)
+      po: 
+          - [a, sdo:Software]
+          - [dcterms:creator, http://w3id.org/mlsea/kaggle/agent/$(AuthorUserId)~iri]
+          - [dcterms:created, $(CreationDate), xsd:dateTime]
+          - [schema:codeRepository, https://www.kaggle.com/code/$(UserName)/$(CurrentUrlSlug)~iri]
+          - [sdo:hasSourceCode, http://w3id.org/mlsea/kaggle/sourceCode/$(Id)]
+
+    sourceCode:
+        sources:
+            - ['Data/KernelVersions_sample.csv~csv']
+        s: http://w3id.org/mlsea/kaggle/sourceCode/$(Id)
+        po:
+            - [a, sdo:SourceCode]
+            - [sdo:programmingLanguage, $(LanguageName), rdfs:Literal]
+
+    creator:
+      sources:
+          - ['Data/Users_sample.csv~csv']
+      s: http://w3id.org/mlsea/kaggle/agent/$(Id)
+      po:
+        - [a, foaf:Agent]
+        - [rdfs:label, $(DisplayName), rdfs:Literal] 
+        - [foaf:name, $(DisplayName), rdfs:Literal]
+          
+    kernelVersion:
+      sources:
+          - ['Data/KernelVersions_sample.csv~csv']
+      s: http://w3id.org/mlsea/kaggle/software/$(ScriptId)
+      po: 
+          - [dcterms:title, $(Title), rdfs:Literal]
+          - [rdfs:label, $(Title), rdfs:Literal]
+          - [dcterms:modified, $(CreationDate), xsd:dateTimeStamp]
+
+    datasetKernel:
+      sources:
+          - ['Data/KernelVersions_sample.csv~csv']
+      s: http://w3id.org/mlsea/kaggle/dataset/$(DatasetId)
+      po:
+          - [mlso:hasRelatedSoftware, http://w3id.org/mlsea/kaggle/software/$(ScriptId)~iri]
