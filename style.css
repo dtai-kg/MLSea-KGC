@@ -1,30 +1,49 @@
 body {
-    background-color: #f0f0f0; /* Set your desired background color */
+    background: linear-gradient(to bottom, #edfafe 10%, #5dacfb );
     text-align: center;
-    padding: 50px;
+    font-size: large;
+    padding: 10px;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Playfair Display', serif;
+    min-height: 100vh;
 }
 
-.centered-container {
+header {
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+
+.list-container {
     display: inline-block;
     text-align: left;
-    max-width: 450px; /* Set a maximum width for the centered container */
-    width: 100%; /* Ensure the container takes up the available width */
-    margin-left: auto;
-    margin-right: auto;
+    margin: 10px 10px 10px 20px;
+    max-width: 600px; 
+    width: 100%; 
 }
 
+.text-container {
+    display: inline-block;
+    text-align: left;
+    margin: 10px 10px 10px 30px;
+    max-width: 900px; 
+    width: 100%; 
+}
+
+.content-container {
+    max-width: 800px; /* Adjust the maximum width based on your design */
+    margin: 0 auto;
+  }
+
 h1 {
-    color: #333; /* Set your desired title color */
+    color: #333; 
 }
 
 p {
-    color: #555; /* Set your desired text color */
+    color: rgb(20, 19, 19); 
 }
 
 ul {
-    /*list-style-type: disc; */
     padding: 0;
 }
 
@@ -34,14 +53,33 @@ ul ul {
 
 
 li {
-    margin: 10px 0;
+    margin: 10px;
+    padding: 10px 10px 10px 0px;
 }
 
 a {
-    color: #007bff; /* Set your desired link color */
+    color: #0040ff; 
     text-decoration: none;
 }
 
 a:hover {
     text-decoration: underline;
 }
+
+figure {
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  figure img {
+    max-width: 100%; /* Ensure the image does not exceed the width of its container */
+    height: auto; /* Maintain the aspect ratio */
+    display: block; /* Remove extra space below inline elements */
+  }
+
+  figcaption {
+    font-style: italic;
+    text-align: center;
+    margin-top: 10px;
+    color: rgb(68, 68, 68);
+  }
