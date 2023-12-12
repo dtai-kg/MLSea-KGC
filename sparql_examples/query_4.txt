@@ -1,0 +1,13 @@
+# This query returns machine learning models and related code repositories, given a model name. All models that contain the searched name are returned.
+
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+
+SELECT STR(?label) AS ?model, (GROUP_CONCAT(DISTINCT ?repository; separator=',\n') AS ?repository)
+WHERE {
+  ?model rdf:type mls:Model ;
+    rdfs:label ?label.
+  FILTER (CONTAINS(LCASE(?label), "bert"))
+  OPTIONAL {?model schema:codeRepository ?repository. }
+}LIMIT 100 

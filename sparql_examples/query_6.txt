@@ -1,0 +1,21 @@
+# This query returns datasets along with some statistical measures provided by the corresponding platform, given a dataset name. All datasets that contain the searched name are returned.
+
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+
+SELECT STR(?datasetTitle) AS ?datasetTitle, ?datasetLocation, (GROUP_CONCAT(DISTINCT ?datasetChar; separator=',\n') AS ?characteristic)
+WHERE {
+  ?dataset a mls:Dataset;
+       dcat:landingPage ?datasetLocation;
+       dcterms:title ?datasetTitle.
+  OPTIONAL { ?dataset dcterms:description ?label }
+  OPTIONAL { ?dataset rdfs:label ?label }
+  FILTER (CONTAINS(LCASE(?label), "eye"))
+  OPTIONAL { ?dataset dcat:distribution ?distribution.
+    ?distribution mls:hasQuality ?characteristic. 
+    ?characteristic rdfs:label ?characteristicName;
+      mls:hasValue ?characteristicValue.
+    BIND(CONCAT(?characteristicName, ": ", ?characteristicValue) AS ?datasetChar)
+ }
+}LIMIT 100 
