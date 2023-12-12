@@ -1,0 +1,39 @@
+# This query returns machine learning implementations, related publications, algorithms and hyper-parameters, given an implementation name. All implementations that contain the searched name are returned.
+
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX mlso: <http://w3id.org/mlso/>
+
+select (STR(COALESCE(?label, ?title)) AS ?implementation), (GROUP_CONCAT(DISTINCT ?pub; separator=',\n') AS ?publication), (GROUP_CONCAT(DISTINCT ?algo; separator=',\n') AS ?algorithm), (GROUP_CONCAT(DISTINCT ?hyperP; separator=',\n') AS ?hyperParameter)
+where{
+{
+  ?implemId a mls:Implementation;
+    rdfs:label ?label.
+  FILTER (CONTAINS(LCASE(?label), "bagging"))
+}
+UNION
+{
+  ?implemId a mls:Implementation;
+      dcterms:description ?desc;
+      dcterms:title ?title.
+  FILTER (CONTAINS(LCASE(?desc), "bagging"))
+}
+
+OPTIONAL {
+  ?pubId mlso:hasRelatedImlpementation ?implemId; 
+    rdf:type mlso:ScientificWork;
+    dcterms:source ?pub.}
+
+OPTIONAL {
+  ?implemId mls:implements ?algoId.
+  ?algoId rdfs:label ?algo.}
+
+OPTIONAL {
+  ?implemId mls:hasHyperParameter ?hyperPID.
+  ?hyperPID dcterms:description ?hyperP_desc; dcterms:title ?hyperP_title.
+  BIND(CONCAT(STR(?hyperP_title),": ", STR(?hyperP_desc)) AS ?hyperP)}
+
+} GROUP BY ?label ?title

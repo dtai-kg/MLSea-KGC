@@ -1,0 +1,48 @@
+#This query returns dataset locations, related machine learning tasks, code repositories or notebooks and publications that introduce the dataset, given a dataset name. All datasets that contain the searched name are returned. 
+
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX mlso: <http://w3id.org/mlso/>
+PREFIX schema: <http://schema.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT STR(?datasetTitle) AS ?datasetTitle, ?datasetLocation, (GROUP_CONCAT(DISTINCT COALESCE(?OML_Task, ?PwC_Task); separator=',\n') AS ?task), (GROUP_CONCAT(DISTINCT COALESCE(?codeNotebook, ?codeRepo); separator=',\n') AS ?code), (GROUP_CONCAT(DISTINCT ?publication; separator=',\n') AS ?introducedIn)
+WHERE {
+  ?dataset a mls:Dataset;
+       dcat:landingPage ?datasetLocation;
+       dcterms:title ?datasetTitle.
+  OPTIONAL { ?dataset dcterms:description ?label }
+  OPTIONAL { ?dataset rdfs:label ?label }
+  FILTER (CONTAINS(?label, "CIFAR-10") || CONTAINS(LCASE(?label), "CIFAR-10"))
+
+OPTIONAL {
+    ?dataset mlso:hasRelatedSoftware ?softwareID.
+    ?softwareID schema:codeRepository ?codeNotebook.
+  }
+
+  OPTIONAL {
+    ?taskId mls:definedOn ?dataset;
+          prov:atLocation ?OML_Task.
+  }
+
+  OPTIONAL {
+      ?dataset mlso:hasTaskType ?taskType.
+      ?taskType skos:prefLabel ?PwC_Task.
+  }
+
+  OPTIONAL {
+   ?dataset mlso:hasScientificReference ?publicationID.
+    ?publicationID dcterms:source  ?publication.
+  }
+
+ OPTIONAL {
+    ?dataset mlso:hasScientificReference ?publicationID.
+    ?publicationID mlso:hasRelatedSoftware  ?softwareID.
+    ?softwareID schema:codeRepository ?codeRepo.
+}
+
+}
+GROUP BY ?datasetTitle ?datasetLocation 

@@ -1,0 +1,28 @@
+# This query returns datasets and evaluation results for machine learning experiments that achieve tasks which are defined on a these datasets, given a dataset name. All datasets that contain the searched name are returned.
+
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+select str(?datasetTitle) as ?datasetTitle, ?datasetLocation, ?runLocation, 
+(group_concat(distinct ?eval; separator=',\n') as ?evaluations)
+where{
+  ?Dataset a mls:Dataset;
+    dcat:landingPage ?datasetLocation;
+    dcterms:title ?datasetTitle.
+  OPTIONAL { ?Dataset dcterms:description ?label }
+  OPTIONAL { ?Dataset rdfs:label ?label }
+  FILTER (CONTAINS(?label, "Steel Plates") || CONTAINS(LCASE(?label), "steel plates"))
+  OPTIONAL{
+    ?taskId mls:definedOn ?Dataset.     
+    ?runId mls:achieves ?taskId;
+      prov:atLocation ?runLocation;
+      mls:hasOutput ?modelEvalId.
+    ?modelEvalId rdfs:label ?evalName;
+      mls:hasValue ?evalValue.
+    BIND(CONCAT(?evalName, ": ", ?evalValue) AS ?eval)
+  }
+}
+GROUP BY ?datasetTitle ?datasetLocation 
