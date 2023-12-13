@@ -1,0 +1,17 @@
+# This query returns the datasets with the most dedicated code notebooks.
+
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX mlso: <http://w3id.org/mlso/>
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT STR(?title) AS ?dataset, ?location,  (COUNT(?notebook) AS ?notebookCount)
+WHERE {
+  ?dataset a mls:Dataset ;
+    dcterms:title ?title;
+    dcat:landingPage ?location;
+    mlso:hasRelatedSoftware ?notebook.
+}
+GROUP BY ?title ?location 
+ORDER BY DESC(?notebookCount)
+LIMIT 100

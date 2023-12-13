@@ -1,0 +1,24 @@
+# This query returns datasets along with machine learning experiments and their input configurations for the specified dataset, given a dataset name. All datasets that contain the searched name are returned.
+
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX mlso: <http://w3id.org/mlso/>
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT STR(?datasetTitle) As ?dataset, ?location AS ?run, (group_concat(distinct ?hyperP; separator=',\n') as ?hyperparameterConfigurations)
+WHERE {
+  ?datasetId a mls:Dataset;
+    dcterms:title ?datasetTitle.
+  FILTER (CONTAINS(LCASE(?datasetTitle), "white-clover"))
+  ?runId a mls:Run;
+    prov:atLocation ?location;
+    mls:hasInput ?datasetId;
+    mls:hasInput ?hyperPSID.
+  ?hyperPSID a mls:HyperParameterSetting;
+    mls:hasValue ?hyperValue;
+    mls:specifiedBy ?hyperPID.
+  ?hyperPID dcterms:title ?hyperPtitle.
+  BIND(CONCAT(STR(?hyperPtitle),": ", STR(?hyperValue)) AS ?hyperP)
+}
+GROUP BY ?location ?datasetTitle
+LIMIT 1
