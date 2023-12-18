@@ -40,3 +40,13 @@ The **RML mapping** that were used for each platform are also provided, demonstr
 # MLSea-KG Snapshots
 
 **MLSea-KG** snapshots are available at **MLSea-KG's** [Zenodo repository](https://zenodo.org/doi/10.5281/zenodo.10287349).
+
+# Resource Code Pagkage Installation
+
+Clone the repository:
+
+    git clone https://github.com/dtai-kg/MLSea-Discover.git
+
+Install dependencies: 
+
+    pip install requirements.txt

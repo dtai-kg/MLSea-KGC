@@ -1,0 +1,5 @@
+python==3.9.18
+morph_kgc==2.6.4
+openml==0.14.1
+pandas==2.1.4
+validators==0.22.0
