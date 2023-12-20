@@ -1,20 +1,16 @@
 import morph_kgc
-from get_data_sample import get_df_batch, get_task_batch, get_dataset_batch, get_run_batch, get_flow_batch, get_pwc_json_batch
-from get_data_sample import load_kaggle_dataset_data, load_kaggle_kernel_data, get_kaggle_dataset_batch, get_kaggle_kernel_batch
+from get_data_sample import *
 from queries import *
-from graph_db import *
 import sys
 import pandas as pd
 import json
 import warnings
-import re
 import gzip
 import shutil
 import os
-from datetime import datetime
-import numpy as np
 from preprocessing_modules import *
 warnings.simplefilter(action='ignore', category=FutureWarning)
+import config
 
 def integrate_kaggle_kernel(kernels_df, users_df, kernel_versions_df,
  targetpath, files, file_part, file_subpart):
@@ -562,14 +558,14 @@ def integrate_kaggle_kernels_from_csv(datapath, targetpath, offset, batch_size,
 def integrate_pwc():
 
     print("Processing Papers with Code dumps...")
-    datapath = "../Data/PwC-Data/"
+    datapath = config.PWC_INPUT + config.ORIGINAL_DATA_FOLDER
     filenames = ['datasets.json', 
                 'paper_code_links.json', 
                 'papers_with_abstracts.json',
                 'evaluations.json']
-    # for file in filenames:
-    #     preprocess_json(datapath, file)
-    # pre_process_pwc_evaluations(datapath)
+    for file in filenames:
+        preprocess_json(datapath, file)
+    pre_process_pwc_evaluations(datapath)
     filenames.append('evaluations.csv')
     print("Dumps were succesfully cleaned!\n")
 
@@ -579,7 +575,7 @@ def integrate_pwc():
                 './morph_config/pwc_model_conf.ini',
                 './morph_config/pwc_evaluations_conf.ini']
     
-    targetpath = "/Volumes/ExternalDrive/dumps/"
+    targetpath = config.OUTPUT_PATH
     file_part = 1
     file_subpart = 1
     total_triples = 0
@@ -606,23 +602,22 @@ def integrate_pwc():
 
 def integrate_openml():
 
-    datapath = "../Data/OpenML-Data/"
-    # targetpath = "/Volumes/ExternalDrive/dumps/"
-    targetpath = "../../runs/"
+    datapath = config.OPENML_INPUT + config.ORIGINAL_DATA_FOLDER
+    targetpath = config.OUTPUT_PATH
     batch_offset = 0
     batch_size = 1000
-    # integrate_openml_tasks_from_csv(datapath, targetpath, batch_offset, batch_size)
-    # integrate_openml_flows_from_csv(datapath, targetpath, batch_offset, batch_size)
-    # integrate_openml_datasets_from_csv(datapath, targetpath, batch_offset, batch_size)
-    integrate_openml_runs_from_csv(datapath, targetpath, batch_offset, batch_size)
+    dataset_batch_size = 1
+    integrate_openml_tasks_from_csv(datapath, targetpath, batch_offset, batch_size)
+    integrate_openml_flows_from_csv(datapath, targetpath, batch_offset, batch_size)
+    integrate_openml_datasets_from_csv(datapath, targetpath, batch_offset, batch_size)
+    integrate_openml_runs_from_csv(datapath, targetpath, batch_offset, dataset_batch_size)
 
     return
 
 def integrate_kaggle():
 
-    datapath = "../Data/Kaggle-Data/"
-    #samples_path = "Mappings/Kaggle/Data/"
-    targetpath = "/Volumes/ExternalDrive/dumps/"
+    datapath = config.KAGGLE_INPUT + config.ORIGINAL_DATA_FOLDER
+    targetpath = config.OUTPUT_PATH
     file_part = 1
     total_triples = 0
     goal_triples = 50000000
@@ -662,6 +657,8 @@ def delete_files(targetpath, files):
 if __name__ == "__main__":
 
     integrate_openml()
+    integrate_kaggle()
+    integrate_pwc()
 
 
 

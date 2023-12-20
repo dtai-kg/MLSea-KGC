@@ -1,14 +1,11 @@
 import openml
 import pandas as pd
-import zipfile
-import time
 import signal
 import numpy as np 
 import multiprocessing
 import validators
-import sys
-from data_integration import *
-import re
+from preprocessing_modules import *
+import config
 
 def extract_run_sources(n_runs, timeout, batch_size, run_cp):
     
@@ -663,7 +660,7 @@ def openml_data_collector():
     # Flows: 16.7 K (16,719)
 
     openml.config.apikey = 'eee9181dd538cb1a9daac582a55efd72'
-    filepath = "~/Desktop/ML-KG/Data/OpenML-Data/"
+    filepath = config.OPENML_INPUT
 
     # host = GRAPH_DB_HOST
     # repository = OPEN_ML_REPOSITORY
@@ -681,10 +678,11 @@ def openml_data_collector():
     
     checkpoints, latest_ids = get_checkpoints([runs_csv, datasets_csv, tasks_csv, flows_csv])
     run_cp, dataset_cp, task_cp, flow_cp = 6000000 +checkpoints[0], checkpoints[1], checkpoints[2], checkpoints[3]
+    config.update_openml_checkpoints(run_cp, dataset_cp, task_cp, flow_cp)
     run_lid, dataset_lid, task_lid, flow_lid = latest_ids[0], latest_ids[1], latest_ids[2], latest_ids[3]
 
     print("OpenML Data Collector initiated...\n")
-    print(f"Currently already collected: {run_cp} Runs, {dataset_cp} Datasets, {task_cp} Tasks and {flow_cp} Flows")
+    print(f"Currently already collected: {config.OPENML_RUN_CURRENT_OFFSET + run_cp} Runs, {dataset_cp} Datasets, {task_cp} Tasks and {flow_cp} Flows")
     print(f"Latest Run collected: Run {run_lid}")
     print(f"Latest Dataset collected: Dataset {dataset_lid}")
     print(f"Latest Task collected: Task {task_lid}")
@@ -697,12 +695,12 @@ def openml_data_collector():
         print("Running single-thread collector...")
         datasets_max_search_size = 1000
         extract_dataset_sources(datasets_max_search_size, dataset_timeout, dataset_batch_size, dataset_cp)
-        # tasks_max_search_size = 100
-        # extract_task_sources(tasks_max_search_size, task_timeout, batch_size, task_cp)
-        # flows_max_search_size = 100
-        # extract_flow_sources(flows_max_search_size, flow_timeout, batch_size, flow_cp)
-        # runs_max_search_size = 100000
-        # extract_run_sources(runs_max_search_size, run_timeout, batch_size, run_cp)
+        tasks_max_search_size = 100
+        extract_task_sources(tasks_max_search_size, task_timeout, batch_size, task_cp)
+        flows_max_search_size = 100
+        extract_flow_sources(flows_max_search_size, flow_timeout, batch_size, flow_cp)
+        runs_max_search_size = 100000
+        extract_run_sources(runs_max_search_size, run_timeout, batch_size, config.OPENML_RUN_CURRENT_OFFSET + run_cp)
 
     # Multi-thread collector
     def run_multi_thread_collector():
@@ -713,7 +711,7 @@ def openml_data_collector():
         datasets_max_search_size = 500
         tasks_max_search_size = 10000
         flows_max_search_size = 3500
-        run_args = (runs_max_search_size, run_timeout, batch_size, run_cp)
+        run_args = (runs_max_search_size, run_timeout, batch_size, config.OPENML_RUN_CURRENT_OFFSET + run_cp)
         dataset_args = (datasets_max_search_size, dataset_timeout, dataset_batch_size, dataset_cp)
         task_args = (tasks_max_search_size, task_timeout, batch_size, task_cp)
         flow_args = (flows_max_search_size, flow_timeout, batch_size, flow_cp)
@@ -736,7 +734,6 @@ def openml_data_collector():
 
 if __name__ == "__main__":
 
-    filepath = "../Data/OpenML-Data/"
     openml_data_collector()
 
 
