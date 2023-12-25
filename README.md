@@ -33,11 +33,13 @@ OpenML CSV dumps are also generated, to store data retrieved from the OpenML API
 # RML Mappings
 
 The **RML mapping** that were used for each platform are also provided, demonstrating the rules used to declaratively construct **MLSea-KG**. Both common RML mappings and the corresponding in-memory RML mappings used to generate RDF from in-memory samples are provided, complemented by their YARRRML serialization.
+
 <br>
 
 # Querying MLSea-KG
 
 **MLSea-KG** is accessible through our SPARQL [endpoint](http://w3id.org/mlsea-kg). The [sparql_examples](https://github.com/dtai-kg/MLSea-Discover/tree/main/sparql_examples) folder contains example queries for traversing **MLSea-KG**. 
+
 <br>
 
 # MLSea-KG Snapshots
