@@ -85,4 +85,6 @@ View and explore the [RDF mappings](https://github.com/dtai-kg/MLSea-Discover/tr
 
 Generate the RDF dumps of MLSea-KG by running: 
 
-    python data_integration.py
+    python data_integration_openml.py
+    python data_integration_kaggle.py
+    python data_integration_pwc.py

@@ -5,6 +5,8 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 from datetime import datetime
 from preprocessing_modules import *
+import config
+from update_sources import *
 
 def get_openml_random_sample(initial_sample_size, random_sample_size):
 
@@ -110,9 +112,9 @@ def get_df_batch(df, offset, size):
     integration_clearance = True
     df_size = len(df)
 
-    if (offset+size) > df_size and offset < df_size:
+    if (offset+size) >= df_size and offset < df_size:
         df = df.iloc[offset:].copy()
-    elif offset > df_size: 
+    elif offset >= df_size: 
         integration_clearance = False
     elif offset+size < df_size:
         df = df.iloc[offset:(offset+size)].copy()
@@ -235,11 +237,18 @@ def get_kaggle_kernel_batch(kernels_df, users_df, kernel_versions_df, kernel_ver
 
     return kernels_df, users_df, kernel_versions_df, kernel_clearance
 
-def load_kaggle_dataset_data(datapath):
+def load_kaggle_dataset_data(datapath, update = False):
 
-    datasets_df = pd.read_csv(datapath + "Datasets.csv")[[
-    "Id", "CreatorUserId", "CurrentDatasetVersionId",
-     "CreationDate", "TotalViews", "TotalDownloads", "TotalKernels"]]
+    dataset_columns_to_keep = ["Id", "CreatorUserId", "CurrentDatasetVersionId","CreationDate"]
+    original_path = datapath + config.ORIGINAL_DATA_FOLDER
+    update_path = datapath + config.UPDATE_MONTH_FOLDER
+
+    if update == False:
+        datapath = original_path
+        datasets_df = pd.read_csv(datapath + "Datasets.csv")[dataset_columns_to_keep]
+    elif update == True:
+        datapath = update_path
+        datasets_df = get_csv_updates(original_path + "Datasets.csv", datapath + "Datasets.csv", dataset_columns_to_keep)
     
     users_df = pd.read_csv(datapath + "Users.csv")[["Id", "UserName", "DisplayName"]]
     
@@ -254,14 +263,21 @@ def load_kaggle_dataset_data(datapath):
 
     return datasets_df, users_df, dataset_versions_df, dataset_tags_df, tags_df
 
-def load_kaggle_kernel_data(datapath):
+def load_kaggle_kernel_data(datapath, update = False):
+
+    kernel_columns_to_keep = ["Id", "AuthorUserId", "CurrentKernelVersionId", "CreationDate", "CurrentUrlSlug"]
+    original_path = datapath + config.ORIGINAL_DATA_FOLDER
+    update_path = datapath + config.UPDATE_MONTH_FOLDER
+
+    if update == False:
+        datapath = original_path
+        kernels_df = pd.read_csv(datapath + "Kernels.csv")[kernel_columns_to_keep]
+    elif update == True:
+        datapath = update_path
+        kernels_df = get_csv_updates(original_path + "Kernels.csv", datapath + "Kernels.csv", kernel_columns_to_keep)
 
     users_df = pd.read_csv(datapath + "Users.csv")[["Id", "UserName", "DisplayName"]]
 
-    kernels_df = pd.read_csv(datapath + "Kernels.csv")[[
-    "Id", "AuthorUserId", "CurrentKernelVersionId",
-    "CreationDate", "CurrentUrlSlug"
-    ]]
     #Filtering of kernels from restricted accounts
     kernels_df = kernels_df[kernels_df["AuthorUserId"].isin(users_df["Id"])]
 
@@ -283,5 +299,4 @@ def load_kaggle_kernel_data(datapath):
     ]]
 
     return kernels_df, users_df, kernel_versions_df, kernel_version_ds_df, dataset_versions_df, kernel_languages_df
-
 

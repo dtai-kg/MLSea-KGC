@@ -9,9 +9,9 @@ def preprocess_json_strings(data, preprocess_string_func, preprocess_datetime_fu
     if isinstance(data, dict):
         for key, value in data.items():
             if key.lower() == "date" or key.lower() == "paper_date" or key.lower() == "introduced_date":
-                data[key] = preprocess_datetime_func(value)
+                data[key] = preprocess_datetime_func(value) if value is not None else None
             elif key.lower() == "homepage":
-                data[key] = value.lower()
+                data[key] = value.lower() if value is not None else None
             else:
                 data[key] = preprocess_json_strings(value, preprocess_string_func, preprocess_datetime_func)
     

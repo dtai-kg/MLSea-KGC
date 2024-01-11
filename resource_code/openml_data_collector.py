@@ -4,12 +4,13 @@ import signal
 import numpy as np 
 import multiprocessing
 import validators
-from preprocessing_modules import *
 import config
+from preprocessing_modules import *
+
 
 def extract_run_sources(n_runs, timeout, batch_size, run_cp):
     
-    filepath = "~/Desktop/ML-KG/Data/OpenML-Data/"
+    filepath = config.OPENML_INPUT
 
     #Download OpenML Runs
     print("Extracting OpenML Run data...")
@@ -148,7 +149,7 @@ def populate_metadata_run_dfs(batch_run_df, run_dict):
 
 def extract_dataset_sources(n_datasets, timeout, batch_size, dataset_cp):
 
-    filepath = "~/Desktop/ML-KG/Data/OpenML-Data/"
+    filepath = config.OPENML_INPUT
     # named_graph = OPENML_DATASET_GRAPH
     # dataset_cp = find_instance_count(db, named_graph) #####################################
     
@@ -374,7 +375,7 @@ def populate_metadata_dataset_dfs(batch_dataset_df, dataset_dict):
 
 def extract_task_sources(n_tasks, timeout, batch_size, task_cp):
 
-    filepath = "~/Desktop/ML-KG/Data/OpenML-Data/"
+    filepath = config.OPENML_INPUT
 
     #Download OpenML Tasks
     print("Extracting OpenML Task data...")
@@ -461,7 +462,7 @@ def populate_metadata_task_dfs(batch_task_df, task_dict):
 
 def extract_flow_sources(n_flows, timeout, batch_size, flow_cp):
 
-    filepath = "~/Desktop/ML-KG/Data/OpenML-Data/"
+    filepath = config.OPENML_INPUT
 
     #Download OpenML Flows
     print("Extracting OpenML Flow data...")
@@ -659,6 +660,8 @@ def openml_data_collector():
     # Tasks: 261.4 K (261,404)
     # Flows: 16.7 K (16,719)
 
+    print("OpenML Data Collector initiated...\n")
+
     openml.config.apikey = 'eee9181dd538cb1a9daac582a55efd72'
     filepath = config.OPENML_INPUT
 
@@ -670,18 +673,16 @@ def openml_data_collector():
     batch_size = 100
     dataset_batch_size = 1
 
-    # CSV storing checkpoints
     runs_csv = filepath + "runs3.csv"
     datasets_csv = filepath + "datasets.csv"
     tasks_csv = filepath + "tasks.csv"
     flows_csv = filepath + "flows.csv"
     
     checkpoints, latest_ids = get_checkpoints([runs_csv, datasets_csv, tasks_csv, flows_csv])
-    run_cp, dataset_cp, task_cp, flow_cp = 6000000 +checkpoints[0], checkpoints[1], checkpoints[2], checkpoints[3]
+    run_cp, dataset_cp, task_cp, flow_cp = checkpoints[0], checkpoints[1], checkpoints[2], checkpoints[3]
     config.update_openml_checkpoints(run_cp, dataset_cp, task_cp, flow_cp)
     run_lid, dataset_lid, task_lid, flow_lid = latest_ids[0], latest_ids[1], latest_ids[2], latest_ids[3]
 
-    print("OpenML Data Collector initiated...\n")
     print(f"Currently already collected: {config.OPENML_RUN_CURRENT_OFFSET + run_cp} Runs, {dataset_cp} Datasets, {task_cp} Tasks and {flow_cp} Flows")
     print(f"Latest Run collected: Run {run_lid}")
     print(f"Latest Dataset collected: Dataset {dataset_lid}")
@@ -708,7 +709,7 @@ def openml_data_collector():
         processes = []
 
         runs_max_search_size = 100000
-        datasets_max_search_size = 500
+        datasets_max_search_size = 1000
         tasks_max_search_size = 10000
         flows_max_search_size = 3500
         run_args = (runs_max_search_size, run_timeout, batch_size, config.OPENML_RUN_CURRENT_OFFSET + run_cp)
