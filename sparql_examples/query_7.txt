@@ -14,4 +14,4 @@ WHERE {
 }
 GROUP BY ?title ?location 
 ORDER BY DESC(?notebookCount)
-LIMIT 100
+LIMIT 10

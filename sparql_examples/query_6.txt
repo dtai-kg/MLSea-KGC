@@ -18,4 +18,4 @@ WHERE {
       mls:hasValue ?characteristicValue.
     BIND(CONCAT(?characteristicName, ": ", ?characteristicValue) AS ?datasetChar)
  }
-}LIMIT 100 
+}LIMIT 10

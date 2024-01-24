@@ -46,3 +46,4 @@ OPTIONAL {
 
 }
 GROUP BY ?datasetTitle ?datasetLocation 
+LIMIT 10

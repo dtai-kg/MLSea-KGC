@@ -26,3 +26,4 @@ where{
   }
 }
 GROUP BY ?datasetTitle ?datasetLocation 
+LIMIT 10

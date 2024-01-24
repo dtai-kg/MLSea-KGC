@@ -10,4 +10,4 @@ WHERE {
     rdfs:label ?label.
   FILTER (CONTAINS(LCASE(?label), "bert"))
   OPTIONAL {?model schema:codeRepository ?repository. }
-}LIMIT 100 
+}LIMIT 10

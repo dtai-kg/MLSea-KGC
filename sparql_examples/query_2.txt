@@ -37,3 +37,4 @@ OPTIONAL {
   BIND(CONCAT(STR(?hyperP_title),": ", STR(?hyperP_desc)) AS ?hyperP)}
 
 } GROUP BY ?label ?title
+LIMIT 10
