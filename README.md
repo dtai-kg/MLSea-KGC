@@ -88,3 +88,17 @@ Generate the RDF dumps of MLSea-KG by running:
     python data_integration_openml.py
     python data_integration_kaggle.py
     python data_integration_pwc.py
+
+
+<br>
+
+# Cite 
+
+Thank you for reading! To cite our resource:
+
+    @InProceedings{dasoulas2024mlsea,
+        author    = {Dasoulas, Ioannis and Yang, Duo and Dimou, Anastasia},
+        booktitle = {The Semantic Web},
+        title     = {{MLSea: A Semantic Layer for Discoverable Machine Learning}},
+        year      = {2024}
+    }
