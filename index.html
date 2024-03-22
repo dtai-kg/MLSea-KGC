@@ -1,79 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="images/dtai.ico">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700&display=swap">
-    <title>MLSea</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLSea</title>
+
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="images/dtai.ico">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+
+  <!-- Custom File's Link -->
+  <link rel="stylesheet" href="style.css">
+
 </head>
-<body>
-    <header>
-    <h1>MLSea Resource Artifacts</h1>
-    <p>This web page provides the artifacts related to our submitted publication
-        entitled <br> <b>“MLSea: A Semantic Layer for Discoverable Machine Learning”</b>.<br> 
-        The resource includes:</p> 
-    </header>
-    <br> 
-    
-    <div class="content-container">
-    <div class="list-container">
-        
-        <ul>
-            <li>The Machine Learning Sailor Ontology (MLSO) <a href="https://w3id.org/mlso" target="_blank">documentation</a>.
-            </li>
-            <li>The GitHub <a href="https://github.com/dtai-kg/MLSO" target="_blank">repository</a> for the Machine Learning Sailor Ontology and Taxonomies.
-            </li>
-            <li>The Zenodo <a href="https://zenodo.org/doi/10.5281/zenodo.10287349" target="_blank">repository</a> for the RDF snapshots of MLSea-KG.
-            </li>
-            <li>The MLSea-KG SPARQL <a href="http://w3id.org/mlsea-kg" target="_blank">endpoint</a>.
-            </li>
-            <li>The GitHub <a href="https://github.com/dtai-kg/MLSea-Discover" target="_blank">repository</a> containing resource code and RML mappings used in
-                the construction of MLSea-KG. 
-            </li>
-        </ul>
+
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="100">
+  
+  <!-- Navbar section -->
+  <header class="header_wrapper">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand mx-auto" href="./index.html">
+                <img src="images/mlsea-logo-transparent.png"  alt="logo">
+            </a>
+
+        </div>
+    </nav>
+  </header>
+  <!-- Navbar section exit -->
+
+<!-- Categories section -->
+<section id="categories">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 section-title text-center mb-5">
+                <h2>MLSea Resource Artifacts</h2>
+                <p>This web page provides the artifacts related to our ESWC 2024 publication
+                    entitled <br> <b>“MLSea: A Semantic Layer for Discoverable Machine Learning”</b>.<br> 
+                    The resource includes:</p>
+            </div>
+        </div>
+
+        <div class="container"> 
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <ul>
+                        <li>The Machine Learning Sailor Ontology (MLSO) <a href="https://w3id.org/mlso" target="_blank">documentation</a>.
+                        </li><br>
+                        <li>The GitHub <a href="https://github.com/dtai-kg/MLSO" target="_blank">repository</a> for the Machine Learning Sailor Ontology and Taxonomies.
+                        </li><br>
+                        <li>The Zenodo <a href="https://zenodo.org/doi/10.5281/zenodo.10287349" target="_blank">repository</a> for the RDF snapshots of MLSea-KG.
+                        </li><br>
+                        <li>The MLSea-KG SPARQL <a href="http://w3id.org/mlsea-kg" target="_blank">endpoint</a>.
+                        </li><br>
+                        <li>The GitHub <a href="https://github.com/dtai-kg/MLSea-Discover" target="_blank">repository</a> containing resource code and RML mappings used in
+                            the construction of MLSea-KG. 
+                        </li><br>
+                        <li><a href="http://w3id.org/mlseascape" target="_blank">MLSeascape</a>, a web application that provides user-friendly access over MLSea-KG.
+                        </li><br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br><br>
+
+        <div class="container"> 
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+
+                    <h3>Artifacts Description</h3>
+                    <hr>
+                    <p><b>MLSO:</b> A machine learning ontology that reuses and extends
+                        state-of-the-art ontologies to describe ML workflows, configurations, experimental results,
+                        models, datasets and software implementations.</p>
+
+                        <figure>
+                            <img src="images/UML.jpg" alt="Description of the figure">
+                            <figcaption>Figure 1: MLSO Overview.</figcaption>
+                        </figure>
+
+                    <p><b>MLST:</b> Eights Simple Knowledge Organization System (SKOS) taxonomies of ML-related concepts (e.g.,
+                        task types, evaluation measures) with a combined total of 4532 SKOS concepts.</p>
+
+                        
+
+                    <p><b>MLSea-KG:</b> A declaratively constructed and regularly updated KG with more than 1.44 billion RDF
+                        triples of ML experiments, regarding datasets used in ML experiments, tasks, implementations
+                        and related hyper-parameters, experiment executions, their configuration settings and evaluation results,
+                        code notebooks and repositories, algorithms, publications, models, scientists and practitioners.</p>
+
+                        <figure>
+                            <img src="images/kgc.jpg" alt="Description of the figure">
+                            <figcaption>Figure 2: MLSea-KG Construction Process Overview.</figcaption>
+                        </figure>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+
+<!-- Footer Section Start-->
+<br><br><br>
+<section id="footer" class="footer_wrapper mt-3 mt-md-0 pb-0">
+    <div class="container pb-3">
+        <div class="row">
+            <div class="col-lg-12 text-center text-lg-center">
+                <p>Developed by Ioannis Dasoulas, DTAI Lab, KU Leuven</p>
+            </div>
+        </div>
+
     </div>
 
+</section>
+<!-- Footer section exit -->
 
-    <div class="text-container">
+  <!-- Bootstrap JS and jQuery (optional, for Bootstrap's JavaScript plugins) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="index.js"></script>
 
-        <h2>Artifacts Description</h2>
-        <hr>
-        <p><b>MLSO:</b> A machine learning ontology that reuses and extends
-            state-of-the-art ontologies to describe ML workflows, configurations, experimental results,
-             models, datasets and software implementations.</p>
-
-             <figure>
-                <img src="images/UML.jpg" alt="Description of the figure">
-                <figcaption>Figure 1: MLSO Overview.</figcaption>
-              </figure>
-
-        <p><b>MLST:</b> Eights Simple Knowledge Organization System (SKOS) taxonomies of ML-related concepts (e.g.,
-            task types, evaluation measures) with a combined total of 4532 SKOS concepts.</p>
-
-            
-
-        <p><b>MLSea-KG:</b> A declaratively constructed and regularly updated KG with more than 1.44 billion RDF
-            triples of ML experiments, regarding datasets used in ML experiments, tasks, implementations
-             and related hyper-parameters, experiment executions, their configuration settings and evaluation results,
-              code notebooks and repositories, algorithms, publications, models, scientists and practitioners.</p>
-
-              <figure>
-                <img src="images/kgc.jpg" alt="Description of the figure">
-                <figcaption>Figure 2: MLSea-KG Construction Process Overview.</figcaption>
-              </figure>
-
-              
-
-
-    </div>
-</div>
-
-      <!--  
-    
-    
--->
-    
 </body>
 </html>
