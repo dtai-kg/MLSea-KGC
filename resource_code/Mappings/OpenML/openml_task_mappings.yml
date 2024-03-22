@@ -43,7 +43,7 @@ mappings:
             - [a, mls:EvaluationSpecification]
             - [rdfs:label, Task $(tid) Evaluation Specification, rdfs:Literal] ###
             - [mls:defines, http://w3id.org/mlsea/openml/task/$(tid)~iri]
-            - [mls:hasPart, http://w3id.org/mlsea/openml/evaluationMeasure/$(tid)~iri]
+            - [mls:hasPart, http://w3id.org/mlsea/openml/evaluationMeasure/$(tid)~iri] ###That is wrong, it is not the same with the Evaluation Meaure IRI used in Runs
             - [mls:hasPart, http://w3id.org/mlsea/openml/evaluationProcedure/$(tid)~iri]
 
     
@@ -73,8 +73,7 @@ mappings:
             - ['Mappings/OpenML/Data/OpenML-Types/estimation_procedure_types.csv~csv', '$']
         s: $(skos_uri)
 
- mlso:hasTaskType ?TaskTypeID.
- ?TaskTypeID skos:prefLabel ?PwC_Task.
+
     
 
      

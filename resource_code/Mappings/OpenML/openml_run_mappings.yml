@@ -25,9 +25,9 @@ mappings:
           - [dcterms:description, $(description), rdfs:Literal]
           - [prov:atLocation, $(openml_url)~iri]
           - [mlso:hasPredictionsLocation, $(predictions_url)~iri]
-          - [dcterms:creator, http://w3id.org/mlsea/openml/agent/$(uploader_name)]
-          - [mls:hasInput, http://w3id.org/mlsea/openml/dataset/$(did)]
-          - [mls:executes, http://w3id.org/mlsea/openml/flow/$(flow_id)]
+          - [dcterms:creator, http://w3id.org/mlsea/openml/agent/$(uploader_name)~iri]
+          - [mls:hasInput, http://w3id.org/mlsea/openml/dataset/$(did)~iri]
+          - [mls:executes, http://w3id.org/mlsea/openml/flow/$(flow_id)~iri]
 
     runSettings:
         sources:

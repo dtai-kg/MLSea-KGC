@@ -54,7 +54,7 @@ mappings:
             - ['Data/OpenML-Samples/flow_params.csv~csv']
         s: http://w3id.org/mlsea/openml/flow/$(flow_id)
         po: 
-            - [mls:hasHyperParameter, http://w3id.org/mlsea/openml/flow/$(flow_id)/hyperParameter/$(key)]
+            - [mls:hasHyperParameter, http://w3id.org/mlsea/openml/flow/$(flow_id)/hyperParameter/$(key)~iri]
 
 
     flowHyperparameterDefinition:

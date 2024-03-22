@@ -33,7 +33,7 @@ mappings:
         - [mlso:hasVariant, http://w3id.org/mlsea/pwc/dataset/$(variants)~iri]
         - [mlso:hasNumberOfReferences, $(num_papers), xsd:int]
         - [mlso:hasDataLoaderLocation, $(data_loaders.url)~iri]
-        - [mlso:hasDataLoaderLocation, $(data_loaders.repo)~iri]
+        # - [mlso:hasDataLoaderLocation, $(data_loaders.repo)~iri]
         - [dcat:keyword, $(tasks.task), rdfs:Literal]
         - p: mlso:hasTaskType
           o:
@@ -55,7 +55,7 @@ mappings:
         access: "Mappings/PwC/Data/datasets_sample.json"
         referenceFormulation: jsonpath
         iterator: $.*
-      s: http://w3id.org/mlsea/pwc/modality/$(modalities)
+      s: http://w3id.org/mlsea/pwc/dataModality/$(modalities) #There was an error there, we have to regenerate for madalities
       po:
         - [a, mlso:DataModality]
         - [rdfs:label, $(modalities), rdfs:Literal]

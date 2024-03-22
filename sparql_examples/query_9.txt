@@ -1,0 +1,27 @@
+# This query returns hyper-parametter settings that returned the best precision possible for a specific implementation.  
+
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX mlso: <http://w3id.org/mlso/>
+PREFIX mls: <http://www.w3.org/ns/mls#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?label ?runID (MAX(?precValue) AS ?maxPrecision) (GROUP_CONCAT( ?hpLabel; separator="\n") AS ?hpLabels) (GROUP_CONCAT( ?hpSettingValue; separator="\n") AS ?hpSettingValues)
+where { 
+	?entity rdf:type mls:Implementation;
+			dcterms:title ?label.
+    FILTER(CONTAINS(STR(?label), "keras"))
+	?runID mls:executes ?entity;
+           mls:hasOutput ?modelEvalID.
+    ?modelEvalID rdf:type mls:ModelEvaluation;
+    		mls:specifiedBy ?evalMeasID.
+    ?evalMeasID rdfs:label "precision"^^rdfs:Literal.
+    ?modelEvalID mls:hasValue ?precValue.
+    ?runID mls:hasInput ?hpSettingID.
+    ?hpSettingID rdf:type mls:HyperParameterSetting;
+                 mls:hasValue ?hpSettingValue;
+    			 mls:specifiedBy ?hpID.
+    ?hpID dcterms:title ?hpLabel.
+    
+} GROUP BY ?label ?runID
+ORDER BY DESC(?maxPrecision)
+limit 1
