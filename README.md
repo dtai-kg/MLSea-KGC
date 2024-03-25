@@ -38,7 +38,7 @@ The **RML mapping** that were used for each platform are also provided, demonstr
 
 # Querying MLSea-KG
 
-**MLSea-KG** is accessible through our SPARQL [endpoint](http://w3id.org/mlsea-kg). The [sparql_examples](https://github.com/dtai-kg/MLSea-Discover/tree/main/sparql_examples) folder contains example queries for traversing **MLSea-KG**. 
+**MLSea-KG** is accessible through our SPARQL [endpoint](http://w3id.org/mlsea-kg). The [sparql_examples](https://github.com/dtai-kg/MLSea-KGC/tree/main/sparql_examples) folder contains example queries for traversing **MLSea-KG**. 
 
 <br>
 
@@ -52,7 +52,7 @@ The **RML mapping** that were used for each platform are also provided, demonstr
 
 Clone the repository:
 
-    git clone https://github.com/dtai-kg/MLSea-Discover.git
+    git clone https://github.com/dtai-kg/MLSea-KGC.git
 
 Install dependencies: 
 
@@ -77,7 +77,7 @@ Install dependencies:
 
 **Process RDF Mappings**
 
-View and explore the [RDF mappings](https://github.com/dtai-kg/MLSea-Discover/tree/main/resource_code/Mappings). Make necessary changes to the input sources paths to point to the location of your local data sources. 
+View and explore the [RDF mappings](https://github.com/dtai-kg/MLSea-KGC/tree/main/resource_code/Mappings). Make necessary changes to the input sources paths to point to the location of your local data sources. 
 
 <br>
 
