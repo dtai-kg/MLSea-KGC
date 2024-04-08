@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: "MLSea"
+license: Apache-2.0
+authors:
+  - family-names: Dasoulas
+    given-names: Ioannis
+preferred-citation:
+  authors:
+    - family-names: Dasoulas
+      given-names: Ioannis
+    - family-names: Yang
+      given-names: Duo
+    - family-names: Dimou
+      given-names: Anastasia
+  title: "MLSea: A Semantic Layer for Discoverable Machine Learning"
+  type: conference-paper
+  collection-title: "Proceedings of the 21\textsuperscript{th} Extended Semantic Web Conference (ESWC)"
+  year: 2024
