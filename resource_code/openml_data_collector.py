@@ -8,14 +8,15 @@ import config
 from preprocessing_modules import preprocess_string
 
 
-def extract_run_sources(n_runs, timeout, batch_size, run_cp):
+def extract_run_sources(n_runs, timeout, batch_size, latest_run_id):
 
     filepath = config.OPENML_INPUT
 
     # Download OpenML Runs
     print("Extracting OpenML Run data...")
     try:
-        initial_runs = openml.runs.list_runs(size=n_runs, offset=run_cp)
+        initial_runs = openml.runs.list_runs(
+            id=list(range(latest_run_id, latest_run_id + n_runs)))
         run_df = pd.DataFrame.from_dict(initial_runs, orient="index")[
             ['run_id', 'task_id', 'setup_id', 'flow_id', 'uploader',
              'task_type', 'upload_time', 'error_message']
@@ -48,7 +49,11 @@ def extract_run_sources(n_runs, timeout, batch_size, run_cp):
         try:
             run = openml.runs.get_run(rid)
             signal.alarm(0)
-            run_dict["run_desc"] += preprocess_string(run.description_text),
+            if run.description_text is not None:
+                run_dict["run_desc"] += preprocess_string(
+                    run.description_text),
+            else:
+                run_dict["run_desc"] += None,
             if check_if_url(run.openml_url):
                 run_dict["run_openml_url"] += run.openml_url,
             else:
@@ -88,7 +93,7 @@ def extract_run_sources(n_runs, timeout, batch_size, run_cp):
 
         finally:
             signal.alarm(0)
-            if (rcounter == batch_size) and (run_cp == 0):
+            if (rcounter == batch_size) and (latest_run_id == 0):
                 batch_run_df = run_df.iloc[:rcounter].copy()
                 batch_run_df, evaluations_df, setting_df = \
                     populate_metadata_run_dfs(batch_run_df, run_dict)
@@ -775,8 +780,6 @@ def get_checkpoints(filenames: list):
                   Exception: {str(e)}")
             pass
 
-    if df:
-        del df
     return checkpoints, latest_ids
 
 
@@ -843,7 +846,7 @@ def openml_data_collector():
 
     # Single-thread collector
     def run_single_thread_collector():
-        print("Running single-thread collector...")
+        # print("Running single-thread collector...")
         datasets_max_search_size = 1000
         extract_dataset_sources(datasets_max_search_size,
                                 dataset_timeout, dataset_batch_size,
@@ -854,10 +857,15 @@ def openml_data_collector():
         flows_max_search_size = 100
         extract_flow_sources(flows_max_search_size,
                              flow_timeout, batch_size, flow_cp)
-        runs_max_search_size = 100000
+        runs_max_search_size = 10000
         extract_run_sources(runs_max_search_size, run_timeout,
                             batch_size,
                             config.OPENML_RUN_CURRENT_OFFSET + run_cp)
+        runs_max_search_size = 100
+        extract_run_sources(runs_max_search_size, run_timeout,
+                            batch_size,
+                            int(run_lid))  # Using run last
+        # id to avoid timeouts of large offsets
 
     # Multi-thread collector
     def run_multi_thread_collector():
@@ -891,6 +899,7 @@ def openml_data_collector():
     run_single_thread_collector()
 
     print("Data sources collected succesfully!")
+    return
 
 
 if __name__ == "__main__":

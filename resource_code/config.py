@@ -1,13 +1,12 @@
 # Data Paths
 INPUT_PATH = "/Users/ioannisdasoulas/Desktop/ML-Discovery/ML-KG/Data/"
-OPENML_INPUT = "/Users/ioannisdasoulas/Desktop/ML-Discovery/\
-                ML-KG/Data/OpenML-Data/"
-KAGGLE_INPUT = "/Users/ioannisdasoulas/Desktop/ML-Discovery/\
-                ML-KG/Data/Kaggle-Data/"
+OPENML_INPUT = "/Users/ioannisdasoulas/Desktop/ML-Discovery/ML-KG/Data/OpenML-Data/"
+KAGGLE_INPUT = "/Users/ioannisdasoulas/Desktop/ML-Discovery/ML-KG/Data/Kaggle-Data/"
 PWC_INPUT = "/Users/ioannisdasoulas/Desktop/ML-Discovery/ML-KG/Data/PwC-Data/"
 OUTPUT_PATH = "/Users/ioannisdasoulas/Desktop/ML-Discovery/ML-KG/RDF_Dumps/"
 ORIGINAL_DATA_FOLDER = "23-05-2024/"
 UPDATE_MONTH_FOLDER = "11-12-2025/"
+CONFIG_PATH = "/Users/ioannisdasoulas/Desktop/ML-Discovery/mlsea-discover/resource_code/config.py"
 
 # OpenML API Checkpoints
 OPENML_RUN_CHECKPOINT = 4037963
@@ -32,9 +31,8 @@ PWC_DUMP_LIMIT = 20000000
 
 def update_openml_checkpoints(run_cp, dataset_cp, task_cp, flow_cp):
 
-    # Open the constants.py file for editing
-    with open('/Users/ioannisdasoulas/Desktop/ML-Discovery/\
-              mlsea-discover/resource_code/config.py', 'r') as file:
+    # Open the config.py file for editing
+    with open(CONFIG_PATH, 'r') as file:
         content = file.read()
 
     # Update the values in memory
@@ -52,7 +50,7 @@ def update_openml_checkpoints(run_cp, dataset_cp, task_cp, flow_cp):
         'OPENML_TASK_CHECKPOINT = ' + str(task_cp))
 
     # Write the changes back to the constants.py file
-    with open('config.py', 'w') as file:
-        file.write(content)
+    # with open(CONFIG_PATH, 'w') as file:
+    #     file.write(content)
 
     return
