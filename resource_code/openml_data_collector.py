@@ -775,7 +775,8 @@ def get_checkpoints(filenames: list):
                   Exception: {str(e)}")
             pass
 
-    del df
+    if df:
+        del df
     return checkpoints, latest_ids
 
 
