@@ -829,7 +829,7 @@ def openml_data_collector():
         [runs_csv, datasets_csv, tasks_csv, flows_csv])
     run_cp, dataset_cp, task_cp, flow_cp = checkpoints[
         0], checkpoints[1], checkpoints[2], checkpoints[3]
-    config.update_openml_checkpoints(run_cp, dataset_cp, task_cp, flow_cp)
+
     run_lid, dataset_lid, task_lid, flow_lid = latest_ids[
         0], latest_ids[1], latest_ids[2], latest_ids[3]
 

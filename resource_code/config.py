@@ -16,12 +16,12 @@ OPENML_FLOW_CHECKPOINT = 16851
 OPENML_TASK_CHECKPOINT = 47273
 
 # Dumps current file number
-OPENML_TASK_DUMP_PART = 2
-OPENML_FLOW_DUMP_PART = 2
-OPENML_DATASET_DUMP_PART = 2
-OPENML_RUN_DUMP_PART = 30
-KAGGLE_DUMP_PART = 2
-PWC_DUMP_PART = 2
+OPENML_TASK_DUMP_PART = 1
+OPENML_FLOW_DUMP_PART = 1
+OPENML_DATASET_DUMP_PART = 1
+OPENML_RUN_DUMP_PART = 29
+KAGGLE_DUMP_PART = 1
+PWC_DUMP_PART = 1
 
 # Triples limit per dump
 OPENML_DUMP_LIMIT = 50000000
@@ -50,7 +50,7 @@ def update_openml_checkpoints(run_cp, dataset_cp, task_cp, flow_cp):
         'OPENML_TASK_CHECKPOINT = ' + str(task_cp))
 
     # Write the changes back to the constants.py file
-    # with open(CONFIG_PATH, 'w') as file:
-    #     file.write(content)
+    with open(CONFIG_PATH, 'w') as file:
+        file.write(content)
 
     return
