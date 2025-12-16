@@ -11,8 +11,9 @@ from preprocessing_modules import *
 from update_sources import *
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-def integrate_pwc_object(mapping_config_file, targetpath, 
-        files, file_part, file_subpart):
+
+def integrate_pwc_object(mapping_config_file, targetpath,
+                         files, file_part, file_subpart):
 
     graph = morph_kgc.materialize(mapping_config_file)
     print("RDF generated!")
@@ -21,25 +22,29 @@ def integrate_pwc_object(mapping_config_file, targetpath,
     #     print(s,p,o)
 
     filename = "pwc_" + str(file_part) + "_part_" + str(file_subpart) + ".nt"
-    graph.serialize(destination = targetpath + filename, format = "nt", encoding = "utf-8")
+    graph.serialize(destination=targetpath + filename,
+                    format="nt", encoding="utf-8")
     files.append(filename)
 
     return files, len(graph)
 
-def integrate_pwc_from_json_batch(datapath, targetpath, filename, mapping_config_file, batch_size, 
-    file_part, file_subpart, total_triples, goal_triples, files):
+
+def integrate_pwc_from_json_batch(datapath, targetpath, filename, mapping_config_file, batch_size,
+                                  file_part, file_subpart, total_triples, goal_triples, files):
 
     batch_offset = 0
     with open(datapath+filename, 'r', encoding='utf-8') as j:
         contents = json.load(j)
 
     sample_filename = filename.split('.')[0] + "_sample.json"
-    batch_clearance = get_pwc_json_batch(sample_filename, contents, batch_offset, batch_size)
+    batch_clearance = get_pwc_json_batch(
+        sample_filename, contents, batch_offset, batch_size)
 
     while batch_clearance == True:
-        print(f"\nIntegrating triples from PwC {filename} {batch_offset + 1} to PwC {filename} {batch_size + batch_offset}...")
-        files, n_triples = integrate_pwc_object(mapping_config_file, targetpath, 
-        files, file_part, file_subpart)
+        print(
+            f"\nIntegrating triples from PwC {filename} {batch_offset + 1} to PwC {filename} {batch_size + batch_offset}...")
+        files, n_triples = integrate_pwc_object(mapping_config_file, targetpath,
+                                                files, file_part, file_subpart)
         total_triples += n_triples
         print("Integration complete!")
         print("Current dump triple count:", total_triples, "\n")
@@ -56,15 +61,16 @@ def integrate_pwc_from_json_batch(datapath, targetpath, filename, mapping_config
 
         batch_offset += batch_size
 
-        batch_clearance = get_pwc_json_batch(sample_filename, contents, batch_offset, batch_size)
+        batch_clearance = get_pwc_json_batch(
+            sample_filename, contents, batch_offset, batch_size)
 
     print("No more data to integrate. Returning...\n")
 
     return file_part, file_subpart, total_triples, files
-    
 
-def integrate_pwc_from_csv(datapath, targetpath, filename, mapping_config_file, batch_size, 
-    file_part, file_subpart, total_triples, goal_triples, files):
+
+def integrate_pwc_from_csv(datapath, targetpath, filename, mapping_config_file, batch_size,
+                           file_part, file_subpart, total_triples, goal_triples, files):
 
     df = pd.read_csv(datapath + filename)
     batch_offset = 0
@@ -72,9 +78,10 @@ def integrate_pwc_from_csv(datapath, targetpath, filename, mapping_config_file, 
     batch.to_csv("Mappings/PwC/Data/evaluations_sample.csv", index=False)
 
     while batch_clearance == True:
-        print(f"\nIntegrating triples from PwC {filename} {batch_offset + batch_size + 1} to PwC {filename} {batch_size + batch_offset}...")
-        files, n_triples = integrate_pwc_object(mapping_config_file, targetpath, 
-        files, file_part, file_subpart)
+        print(
+            f"\nIntegrating triples from PwC {filename} {batch_offset + batch_size + 1} to PwC {filename} {batch_size + batch_offset}...")
+        files, n_triples = integrate_pwc_object(mapping_config_file, targetpath,
+                                                files, file_part, file_subpart)
         total_triples += n_triples
         print("Integration complete!")
         print("Current dump triple count:", total_triples, "\n")
@@ -99,7 +106,7 @@ def integrate_pwc_from_csv(datapath, targetpath, filename, mapping_config_file, 
     return file_part, file_subpart, total_triples, files
 
 
-def integrate_pwc(update = False):
+def integrate_pwc(update=False):
 
     print("Processing Papers with Code dumps...")
 
@@ -122,18 +129,17 @@ def integrate_pwc(update = False):
         current_dump = "pwc_" + str(file_part) + ".nt"
         total_triples = count_dump_triples(targetpath + current_dump + ".gz")
         unzip_and_save(targetpath + current_dump + ".gz")
-        files = [current_dump]   
-    
+        files = [current_dump]
 
-    filenames = ['datasets.json', 
-                'paper_code_links.json', 
-                'papers_with_abstracts.json',
-                'evaluations.json']
+    filenames = ['datasets.json',
+                 'paper_code_links.json',
+                 'papers_with_abstracts.json',
+                 'evaluations.json']
     for file in filenames:
-        preprocess_json(datapath, file)
-        if update == True: 
+        preprocess_json(update_path, file)
+        if update == True:
             get_json_updates(original_path + file, update_path + file,
-            update_path + updates_folder + file)
+                             update_path + updates_folder + file)
 
     pre_process_pwc_evaluations(datapath)
     filenames.append('evaluations.csv')
@@ -144,21 +150,20 @@ def integrate_pwc(update = False):
                 './morph_config/pwc_paper_conf.ini',
                 './morph_config/pwc_model_conf.ini',
                 './morph_config/pwc_evaluations_conf.ini']
-    
+
     batch_size = 5000
-    for i in range(0,len(filenames)):
-        
+    for i in range(0, len(filenames)):
+
         if filenames[i].split('.')[1] == "json":
             file_part, file_subpart, total_triples, files = integrate_pwc_from_json_batch(
-            datapath, targetpath, filenames[i], mappings[i], batch_size, 
-            file_part, file_subpart, total_triples, goal_triples, files)
+                datapath, targetpath, filenames[i], mappings[i], batch_size,
+                file_part, file_subpart, total_triples, goal_triples, files)
         else:
             file_part, file_subpart, total_triples, files = integrate_pwc_from_csv(
-            datapath, targetpath, filenames[i], mappings[i], batch_size, 
-            file_part, file_subpart, total_triples, goal_triples, files)
-        
+                datapath, targetpath, filenames[i], mappings[i], batch_size,
+                file_part, file_subpart, total_triples, goal_triples, files)
 
-    if len(files) > 0: 
+    if len(files) > 0:
         output_file = "pwc_" + str(file_part) + ".nt.gz"
         concatenate_and_compress(targetpath, files, output_file)
         delete_files(targetpath, files)
@@ -168,4 +173,4 @@ def integrate_pwc(update = False):
 
 if __name__ == "__main__":
 
-    integrate_pwc(update = True)
+    integrate_pwc(update=True)
